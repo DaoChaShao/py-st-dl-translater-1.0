@@ -5,6 +5,16 @@
 
 ### Features
 
+- add trainer.py for training GRU model on financial news classification ([e06bc63](https://github.com///commit/e06bc639bc1fe74cd4e8c3e4f8f42d46dc436320))
+- add predictor.py for next word prediction using GRU model and OpenAI API ([116d152](https://github.com///commit/116d152965922487fade819966e145c7ffae9431))
+- add evaluator.py for model evaluation and prediction ([c826b78](https://github.com///commit/c826b78ffc9352a5d3ebbc40219b3df63cf59c71))
+- add processor.py for data processing and preparation ([7d66604](https://github.com///commit/7d66604ec5c65cd809629a78d3d3c56a31a10f39))
+- add preprocessor.py for data preprocessing and SQLite storage ([6b2d001](https://github.com///commit/6b2d001245d3c8f461177506c1fa4d8dd16e8397))
+- add prepper.py for data preparation and loading with TorchDataLoader ([dde5692](https://github.com///commit/dde56927ba145dcae71561ff7e5a4ccef30f1d02))
+- add __init__.py for data processing module with utility functions ([7d244fd](https://github.com///commit/7d244fd1bceeebe9ae416ac67a27f0981aea5f36))
+- add .gitignore to exclude Python-generated files and IDE configurations ([a8f05ed](https://github.com///commit/a8f05ed6dd2b1919b5e9cfb2f2e6ea5d7e8fbb38))
+- add configuration files for English and Chinese pipelines with model specifications ([6d73380](https://github.com///commit/6d73380481aee796d8a85f0b9e15f110f27fbc1d))
+- add CHANGELOG.md for version 0.1.0 with feature list and updates ([4931579](https://github.com///commit/493157915e0de4a13b7aba8a9ea32cc07b30d542))
 - add uv.lock file for dependency management and package specifications ([cf9031b](https://github.com///commit/cf9031b9ee980cd811e83523bade449b28aa0588))
 - add unet_focal.py module for Focal Loss implementation in binary segmentation ([b3429f8](https://github.com///commit/b3429f83261f2b77e5a2670200caf3425d796953))
 - add unet_edge.py module for edge-aware loss implementation ([e69e3ab](https://github.com///commit/e69e3ab0e79aca91e4bca37a635e1d11c88d19a4))
