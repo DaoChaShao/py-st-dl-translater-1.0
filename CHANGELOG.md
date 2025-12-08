@@ -1,0 +1,68 @@
+<!-- insertion marker -->
+<a name="0.1.0"></a>
+
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-08)
+
+### Features
+
+- add uv.lock file for dependency management and package specifications ([cf9031b](https://github.com///commit/cf9031b9ee980cd811e83523bade449b28aa0588))
+- add unet_focal.py module for Focal Loss implementation in binary segmentation ([b3429f8](https://github.com///commit/b3429f83261f2b77e5a2670200caf3425d796953))
+- add unet_edge.py module for edge-aware loss implementation ([e69e3ab](https://github.com///commit/e69e3ab0e79aca91e4bca37a635e1d11c88d19a4))
+- add unet_dnf.py module for Dice-Focal-BCE loss implementation ([ec16005](https://github.com///commit/ec1600574e73e18d479c1df367075a38609ce6d8))
+- add unet_dice.py module for Dice loss with binary cross-entropy ([ffaef0a](https://github.com///commit/ffaef0a15a184f76c097422dab1e0e1792d5fc39))
+- add unet5layers4sem.py module for 5-layer UNet model architecture ([881ca40](https://github.com///commit/881ca4085b457d5be90f7c8709b81570623a075d))
+- add unet4layers4sem.py module for 4-layer UNet model architecture ([1839804](https://github.com///commit/1839804d20b3ec935699bf5e9f3a69e151f1d07c))
+- add trainer4torch.py module for training PyTorch models with validation and logging ([0887817](https://github.com///commit/0887817a73c4516bce8c22ca6d9051b33f7b9ea8))
+- add trainer4sem_seg.py module for UNet semantic segmentation training ([521c77b](https://github.com///commit/521c77b2042dd89fd00dc31ebc0b4fc60bd70840))
+- add THU.py module for text segmentation using THULAC ([a409b19](https://github.com///commit/a409b19ed2754b91de634c08ca273d1a27b0266e))
+- add stats.py module for data processing and analysis utilities ([0c1ce2f](https://github.com///commit/0c1ce2fc6e795e91c1d0a88698be849d922927f4))
+- add SQL.py module for SQLite database management and operations ([8ce2a7f](https://github.com///commit/8ce2a7f913665bdd60f62f8b911c87dec0cae993))
+- add seq_next_step.py module for custom PyTorch dataset for sequential next-step prediction ([0f14259](https://github.com///commit/0f142597d9daf5b653aed8dcd43ed7fcf3a69fcf))
+- add seq_classification.py module for custom PyTorch dataset for sequential classification ([3599c71](https://github.com///commit/3599c7130c441e77ca2fb2341d239c61e7330471))
+- add sem_seg.py module for custom PyTorch dataset for semantic segmentation ([c4776a6](https://github.com///commit/c4776a6ce34e16e70b009f4d322361b8fcc2b8f3))
+- add rnn.py module for RNN model implementation and multi-class classification ([9674aae](https://github.com///commit/9674aaea460467f852c97674dfb65008e98b740a))
+- add reshaper.py module for reshaping tensors to grayscale format ([3717de1](https://github.com///commit/3717de148b4f228f843f412ec0f0b13cb8c7da66))
+- update pyproject.toml to add dependencies and configure git-changelog ([fcbbde2](https://github.com///commit/fcbbde29c85c3e92646f7dd6b5aaac7b66bc0c3e))
+- add PT.py module for PyTorch utilities and device management ([11d79ff](https://github.com///commit/11d79ff5a19ec37b7545d7f0604af6a32350cef5))
+- add parser.py module for command line argument parsing ([75da46a](https://github.com///commit/75da46a2a67864d4e50849d573b1254f630f60a8))
+- add nlp.py module for Chinese and English text processing functions ([d4c60ab](https://github.com///commit/d4c60ab2cc433ce296bd444179b1fe04be3ac187))
+- add regression_log_mse function for Log Mean Squared Error loss calculation ([e823394](https://github.com///commit/e82339425e834f3e944a524d5b4fd5c497cc7ce0))
+- add mask_mapper module for converting mask images to class indices ([f916bf8](https://github.com///commit/f916bf8514158da6a0ba90b753e6c7b1c7197347))
+- add LSTM model for multi-class classification tasks ([11da04b](https://github.com///commit/11da04ba26671470c2d3b0c17251623ce58fd52f))
+- add logger utility for logging training metrics and events ([2c2951a](https://github.com///commit/2c2951a73cf522fd9e311fb08b334dca69326059))
+- add custom TorchDataset class for label classification ([47f2f97](https://github.com///commit/47f2f9785230de906c4474bfb496567297d2d753))
+- add highlighter functions for text formatting and styling ([4cd7ecc](https://github.com///commit/4cd7eccd042872de9df66114273f6c605024535d))
+- add helper functions and context managers for code beautification, timing, and random seed management ([9c90fdf](https://github.com///commit/9c90fdf6839933e59a401d2d34dffdcb3be003de))
+- add GRUNet model for multi-class classification tasks ([31a571f](https://github.com///commit/31a571fd70c7b24986e8822365278592ff67ea93))
+- add decorators for function beautification and timing ([2717a91](https://github.com///commit/2717a9190d2be6e287561400145916074d734b50))
+- add custom TorchDataLoader class for PyTorch datasets ([86d34ff](https://github.com///commit/86d34ff28d284f6fd9f2af1ce3ff30e94b3a57a4))
+- add cmn.txt ([9afbf2c](https://github.com///commit/9afbf2c398d88bbff693b8c9c24e3891a22f7106))
+- add configuration management for UNet parameters and settings ([f77e66e](https://github.com///commit/f77e66e33ce3531c90df9eb9a0fc217225c71ac9))
+- add configuration management for sequence tasks and token types ([7b996e4](https://github.com///commit/7b996e4877f2f3d317aff12ed871a9a9098aeaf2))
+- add configuration management for RNN parameters and settings ([9340d9c](https://github.com///commit/9340d9cb0547d6776cac38470b97635b8903ff97))
+- add configuration management for MLP parameters and settings ([b9be498](https://github.com///commit/b9be49859bf0621539fa54eeeb79d75467b3187c))
+- add configuration management for data preprocessing and hyperparameters ([0aa129e](https://github.com///commit/0aa129ea3e81b590d31f7c9c0c4f810b81126af0))
+- add configuration management for CNN parameters and settings ([0a4f084](https://github.com///commit/0a4f0849ca62f4e2a8f39aca865064a1186703cc))
+- add configuration management with file paths and database settings ([6d36d25](https://github.com///commit/6d36d25b8aa29c6b287201749d79c9497ea699aa))
+- add regression metrics calculator for MSE, MAE, RMSE, and R² ([f47a5c9](https://github.com///commit/f47a5c9acc8553842b3531abdf338e2696fc6f34))
+- add binary IoU calculation for semantic segmentation ([da626a8](https://github.com///commit/da626a8afd7e06cc102f7d79777cf353b8719547))
+- add calculator for confusion metrics in binary and multi-class classification ([49e6586](https://github.com///commit/49e65864df1adc165a71ff851cae25c317e5f48e))
+- add classification metrics calculator for accuracy, precision, recall, and F1 score ([f5ebba2](https://github.com///commit/f5ebba27a92adacfd1f15da5077c8388c5198c9c))
+- add OpenAI and DeepSeek API wrappers for text and image generation ([b1352c9](https://github.com///commit/b1352c91c32a8a1eb29d408d41795de54868e557))
+- add Trainers module for neural network training frameworks ([7cedda9](https://github.com///commit/7cedda998395c8cd4a3d7a056720c66c0e543cfc))
+- add comprehensive ML/Data Processing utility module ([b41378f](https://github.com///commit/b41378f76e78a45f8328b8a132711a8e26882f5c))
+- add Trainers & Metrics module with specialized PyTorch implementations ([36154ee](https://github.com///commit/36154ee25550ac76c1c9f62fbcc4b9bf6874df5f))
+- add neural network architectures module with various models ([837c8ce](https://github.com///commit/837c8ce366f1cca3fa30bb4463a79f68b7f124f6))
+- add Trainer module for neural network training implementations ([2609784](https://github.com///commit/2609784bdd452bf3eae65790c8364ae546ecb6e2))
+- add Dataloader module with PyTorch DataLoader wrapper ([e97f0d0](https://github.com///commit/e97f0d084ea636df4a5ceb33ceb3532c96c5c4eb))
+- add criterion module with specialized PyTorch loss functions ([073b710](https://github.com///commit/073b710f3005d7bd5308852968ae151a6dd9869d))
+- add initial configuration module for ML/Data Processing ([27397cb](https://github.com///commit/27397cbb8d775fad4a49ba3b575ba44ce29d0390))
+
+### Bug Fixes
+
+- add missing newline at end of main.py ([22d4ab0](https://github.com///commit/22d4ab0da8987b91ee04dde12670d876b0ce43e2))
+
+### Chore
+
+- add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
+
