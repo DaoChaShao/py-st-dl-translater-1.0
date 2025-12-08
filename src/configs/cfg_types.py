@@ -1,0 +1,49 @@
+#!/usr/bin/env python3.12
+# -*- Coding: UTF-8 -*-
+# @Time     :   2025/12/3 23:20
+# @Author   :   Shawn
+# @Version  :   Version 0.1.0
+# @File     :   cfg_types.py
+# @Desc     :   
+
+from enum import StrEnum, unique
+from pathlib import Path
+
+from src.configs.cfg_base import CONFIG
+from src.utils.stats import load_json
+
+
+@unique
+class SeqTask(StrEnum):
+    SEQ2ONE = "seq2one"
+    SEQ2SEQ = "seq2seq"
+    SEQ_SLICE = "slice"
+
+
+@unique
+class Language(StrEnum):
+    CN = "cn"
+    EN = "en"
+
+
+@unique
+class Tokens(StrEnum):
+    PAD = "<PAD>"
+    UNK = "<UNK>"
+    SOS = "<SOS>"
+    EOS = "<EOS>"
+
+
+@unique
+class LSTMTask(StrEnum):
+    CLASSIFICATION = "classification"
+    GENERATION = "generation"
+
+
+if __name__ == "__main__":
+    out = SeqTask.SEQ2ONE
+    print(out)
+
+    dic: Path = Path(CONFIG.FILEPATHS.DICTIONARY)
+    dictionary: dict = load_json(dic)
+    print(dictionary[Tokens.PAD])
