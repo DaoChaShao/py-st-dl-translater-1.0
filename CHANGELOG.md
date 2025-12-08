@@ -5,6 +5,9 @@
 
 ### Features
 
+- add Chinese README.md for project overview, setup instructions, and privacy notice ([7bd7f8a](https://github.com///commit/7bd7f8a9a09cc198e8ce8cf08c670c29eee946d9))
+- add comprehensive README.md for project overview, setup instructions, and privacy notice ([26a2a16](https://github.com///commit/26a2a163f12eec6378275f0cd03601a187789929))
+- update CHANGELOG.md with recent feature additions and updates ([a1126f1](https://github.com///commit/a1126f1b065bf6db7cdb539c4291065c208d0543))
 - add trainer.py for training GRU model on financial news classification ([e06bc63](https://github.com///commit/e06bc639bc1fe74cd4e8c3e4f8f42d46dc436320))
 - add predictor.py for next word prediction using GRU model and OpenAI API ([116d152](https://github.com///commit/116d152965922487fade819966e145c7ffae9431))
 - add evaluator.py for model evaluation and prediction ([c826b78](https://github.com///commit/c826b78ffc9352a5d3ebbc40219b3df63cf59c71))
