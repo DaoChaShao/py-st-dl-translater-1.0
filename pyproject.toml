@@ -5,4 +5,30 @@ description = "RNN Tranlater 1.0"
 authors = [{ name = "Shawn Yu" }]
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "nltk>=3.9.2",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.12.0",
+    "git-changelog>=2.7.0",
+    "ruff>=0.14.8",
+]
+
+[tool.git-changelog]
+bump = "auto"
+convention = "conventional"
+in-place = false
+filter-commits = ""
+marker-line = "<!-- insertion marker for GitHub -->"
+output = "CHANGELOG.md"
+parse-refs = true
+parse-trailers = true
+provider = "github"
+repository = "."
+sections = ["feat", "fix", "chore", "docs", "perf", "build", "refactor", "test", "deps"]
+template = "angular"
+version-regex = "^## \\[(?P<version>v?[^\\]]+)"
+versioning = "semver"
+zerover = false
