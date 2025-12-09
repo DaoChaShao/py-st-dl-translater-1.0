@@ -15,10 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 @dataclass
 class FilePaths:
     API_KEY: Path = BASE_DIR / "data/api_keys.yaml"
-    DATA4ALL: Path = BASE_DIR / "data/cmn.csv"
+    DATA4ALL: Path = BASE_DIR / "data/cmn.txt"
     DATA4TRAIN: Path = BASE_DIR / "data/train/"
     DATA4TEST: Path = BASE_DIR / "data/test/"
     DICTIONARY: Path = BASE_DIR / "data/dictionary.json"
+    DICTIONARY_CN: Path = BASE_DIR / "data/dictionary_cn.json"
+    DICTIONARY_EN: Path = BASE_DIR / "data/dictionary_en.json"
     LOGS: Path = BASE_DIR / "logs/"
     SAVED_NET: Path = BASE_DIR / "models/model.pth"
     SPACY_MODEL_EN: Path = BASE_DIR / "models/spacy/en_core_web_md"
