@@ -16,9 +16,6 @@ from tqdm import tqdm
 from src.configs.cfg_base import CONFIG
 from src.utils.decorator import timer
 
-spacy4cn = None
-spacy4en = None
-
 
 # @timer
 def regular_chinese(words: list[str]) -> list[str]:
@@ -92,7 +89,7 @@ def unique_characters(content: str) -> list[str]:
 
 
 @timer
-def extract_zh_chars(filepath: str | Path, pattern: str = r"[^\u4e00-\u9fa5]") -> tuple[list, list]:
+def extract_cn_chars(filepath: str | Path, pattern: str = r"[^\u4e00-\u9fa5]") -> tuple[list, list]:
     """ Get Chinese characters from the text content
     :param filepath: path to the text file
     :param pattern: regex pattern to remove unwanted characters
@@ -115,113 +112,90 @@ def extract_zh_chars(filepath: str | Path, pattern: str = r"[^\u4e00-\u9fa5]") -
     return chars, lines
 
 
-@timer
-def spacy_single_tokeniser(content: str, lang: str, strict: bool = False) -> list[str]:
-    """ SpaCy NLP Processor for an English or a Chinese text
-    :param content: a text content to process
-    :param lang: language code for the text (e.g., 'en' for English, 'cn' for Chinese)
-    :param strict: whether to enforce strict token filtering (default is False)
-    :return: list of tokens
-    """
-    nlp = None
+class SpaCyBatchTokeniser:
+    """ "" SpaCy NLP Processor for a batch of English texts or a single text """
 
-    global spacy4cn, spacy4en
-    match lang:
-        case "cn":
-            if spacy4cn is None:
-                spacy4cn = load(CONFIG.FILEPATHS.SPACY_MODEL_CN)
-                print("SpaCy Chinese Model initialized.")
-                print(f"{spacy4cn.pipe_names} loaded.")
-            nlp = spacy4cn
-        case "en":
-            if spacy4en is None:
-                spacy4en = load(CONFIG.FILEPATHS.SPACY_MODEL_EN)
-                print(f"SpaCy English Model initialized.")
-                print(f"{spacy4en.pipe_names} loaded.")
-            nlp = spacy4en
-        case _:
-            raise ValueError(f"Unsupported language: {lang}")
+    def __init__(self, lang: str = "en", batches: int = 100, strict: bool = False) -> None:
+        """ Initialize the SpaCy Batch Tokeniser
+        :param lang: language code for the texts (default is 'en' for English, 'cn' for Chinese)
+        :param batches: number of texts to process in each batch
+        :param strict: whether to enforce strict token filtering (default is False)
+        """
+        self._lang = lang
+        self._batches = batches
+        self._strict = strict
+        self._nlp = None
 
-    words: list[str] = []
-    doc = nlp(content)
-
-    match lang:
-        case "cn":
-            if strict:
-                words = [
-                    token.text for token in doc
-                    if token.text.strip()
-                       and not token.is_stop
-                       and not token.is_punct
-                       and any(c.isalnum() for c in token.text)
-                ]
-            else:
-                words = [
-                    token.text
-                    for token in doc
-                    if token.text.strip()
-                       and not token.is_stop
-                       and any(c.isalnum() for c in token.text)
-                ]
-        case "en":
-            if strict:
-                words = [
-                    token.lemma_.lower() for token in doc
-                    if not token.is_stop
-                       and token.text.strip()
-                       and len(token.lemma_) > 1
-                       and any(c.isalnum() for c in token.text)
-                ]
-            else:
-                words = [
-                    token.lemma_.lower() for token in doc
-                    if not token.is_stop and token.text.strip() and len(token.lemma_) > 1
-                ]
-        case _:
-            raise ValueError(f"Unsupported language: {lang}")
-
-    print(f"The {len(words)} words has been segmented using SpaCy Tokeniser.")
-
-    return words
-
-
-@timer
-def spacy_batch_tokeniser(
-        contents: list[str], lang: str = "en", batches: int = 100, strict: bool = False
-) -> list[list[str]]:
-    """ SpaCy NLP Processor for a batch of English texts
-    :param contents: list of text contents to process
-    :param lang: language code for the texts (default is 'en' for English)
-    :param batches: number of texts to process in each batch
-    :param strict: whether to enforce strict token filtering (default is False)
-    :return: list of tokenized texts
-    """
-    nlp = None
-
-    global spacy4cn, spacy4en
-    match lang:
-        case "cn":
-            if spacy4cn is None:
-                spacy4cn = load(CONFIG.FILEPATHS.SPACY_MODEL_CN)
-                print("SpaCy Chinese Model initialized.")
-                print(f"{spacy4cn.pipe_names} loaded.")
-            nlp = spacy4cn
-        case "en":
-            if spacy4en is None:
-                spacy4en = load(CONFIG.FILEPATHS.SPACY_MODEL_EN)
-                print(f"SpaCy English Model initialized.")
-                print(f"{spacy4en.pipe_names} loaded.")
-            nlp = spacy4en
-        case _:
-            raise ValueError(f"Unsupported language: {lang}")
-
-    words: list[list[str]] = []
-    tokens: list[str] = []
-    for doc in tqdm(nlp.pipe(contents, batch_size=batches), total=len(contents), desc="SpaCy Batch Tokeniser"):
-        match lang:
+    def __enter__(self):
+        """ Enter the context manager """
+        match self._lang:
             case "cn":
-                if strict:
-                    tokens = [
+                self._nlp = load(CONFIG.FILEPATHS.SPACY_MODEL_CN)
+                # print("SpaCy Chinese Model initialized.")
+            case "en":
+                self._nlp = load(CONFIG.FILEPATHS.SPACY_MODEL_EN)
+                # print(f"SpaCy English Model initialized.")
+            case _:
+                raise ValueError(f"Unsupported language: {self._lang}")
+
+        # print(f"{self._nlp.pipe_names} loaded.")
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """ Exit the context manager """
+        if self._nlp:
+            self._nlp = None
+
+        # print(f"SpaCy {self._lang} Model released.")
+
+    def batch_tokenise(self, contents: list[str]) -> list[list[str]]:
+        """ Tokenise a batch of texts
+        :param contents: list of text contents to process
+        :return: list of tokenized texts
+        """
+        if self._nlp is None:
+            raise RuntimeError("Model not loaded. Use within 'with' statement.")
+
+        words: list[list[str]] = []
+        for doc in tqdm(
+                self._nlp.pipe(contents, batch_size=self._batches),
+                total=len(contents),
+                desc=f"SpaCy {self._lang} Tokeniser"
+        ):
+            tokens = self._process_doc(doc)
+
+            words.append(tokens)
+
+        # avg_len = sum(len(w) for w in words) / len(words)
+        # print(f"Average length is {avg_len:.2f} words per content.")
+
+        return words
+
+    def single_tokenise(self, content: str) -> list[str]:
+        """ Tokenise a single text
+        :param content: a text content to process
+        :return: list of tokens
+        """
+        if self._nlp is None:
+            raise RuntimeError("Model not loaded. Use within 'with' statement.")
+
+        doc = self._nlp(content)
+        tokens = self._process_doc(doc)
+
+        # print(f"The {len(tokens)} words has been segmented using SpaCy Tokeniser.")
+
+        return tokens
+
+    def _process_doc(self, doc):
+        """ Process a SpaCy Doc object and extract tokens based on language and strictness
+        :param doc: SpaCy Doc object
+        :return: list of processed tokens
+        """
+        match self._lang:
+            case "cn":
+                if self._strict:
+                    return [
                         token.text for token in doc
                         if token.text.strip()
                            and not token.is_stop
@@ -229,53 +203,50 @@ def spacy_batch_tokeniser(
                            and any(c.isalnum() for c in token.text)
                     ]
                 else:
-                    tokens = [
-                        token.text
-                        for token in doc
+                    return [
+                        token.text for token in doc
                         if token.text.strip()
-                           and not token.is_stop
-                           and any(c.isalnum() for c in token.text)
                     ]
             case "en":
-                if strict:
-                    tokens = [
+                if self._strict:
+                    return [
                         token.lemma_.lower() for token in doc
                         if not token.is_stop
                            and token.text.strip()
-                           and len(token.lemma_) > 1
                            and any(c.isalnum() for c in token.text)
                     ]
                 else:
-                    tokens = [
+                    return [
                         token.lemma_.lower() for token in doc
-                        if not token.is_stop and token.text.strip() and len(token.lemma_) > 1
+                        if token.text.strip()
                     ]
             case _:
-                raise ValueError(f"Unsupported language: {lang}")
-        words.append(tokens)
-
-    print(f"Average length is {sum(len(w) for w in words) / len(words):.2f} words per content.")
-
-    return words
+                raise ValueError(f"Unsupported language: {self._lang}")
 
 
 def build_word2id_seqs(
-        contents: list[list[str]], dictionary: dict[str, int],
-        UNK: str = "<UNK>"
+        contents: list[list[str]], dictionary: dict[str, int], add_sos_eos: bool = False,
+        UNK: str = "<UNK>", SOS: str = "<SOS>", EOS: str = "<EOS>"
 ) -> list[list[int]]:
     """ Build word2id sequences from contents using the provided dictionary
     :param contents: list of texts to convert
     :param dictionary: word2id mapping dictionary
+    :param add_sos_eos: whether to add start-of-sequence and end-of-sequence tokens
+    :param UNK: token for unknown words
+    :param SOS: token for start of sequence
+    :param EOS: token for end of sequence
     :return: list of word2id sequences
     """
     sequences: list[list[int]] = []
     for content in contents:
-        sequence: list[int] = []
+        sequence: list[int] = [dictionary[SOS]] if add_sos_eos else []
         for word in content:
             if word in dictionary:
                 sequence.append(dictionary[word])
             else:
                 sequence.append(dictionary[UNK])
+        if add_sos_eos:
+            sequence.append(dictionary[EOS])
         sequences.append(sequence)
 
     return sequences
@@ -306,4 +277,21 @@ def check_vocab_coverage(words: list[str], dictionary: dict[str, int]) -> float:
 
 
 if __name__ == "__main__":
-    pass
+    text_en = "Hello, world! This is a test."
+    text_cn = "我爱北京天安门。"
+
+    with SpaCyBatchTokeniser(lang="en", strict=False) as tokenizer:
+        tokens = tokenizer.single_tokenise(text_en)
+        print("Tokens:", tokens)
+
+    with SpaCyBatchTokeniser(lang="en", strict=True) as tokenizer:
+        tokens = tokenizer.single_tokenise(text_en)
+        print("Tokens with strict filtering:", tokens)
+
+    with SpaCyBatchTokeniser(lang="cn", strict=False) as tokenizer:
+        tokens = tokenizer.single_tokenise(text_cn)
+        print("Tokens:", tokens)
+
+    with SpaCyBatchTokeniser(lang="cn", strict=True) as tokenizer:
+        tokens = tokenizer.single_tokenise(text_cn)
+        print("Tokens with strict filtering:", tokens)
