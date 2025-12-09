@@ -6,44 +6,40 @@
 # @File     :   prepper.py
 # @Desc     :   
 
-from numpy import ndarray
 from pathlib import Path
 from random import randint
+from tqdm import tqdm
 
 from src.configs import Tokens
 from src.configs.cfg_dl import CONFIG4DL
-from src.datasets.seq_classification import TorchDataset4Seq2Classification
+from src.datasets.dataset4torch import TorchDataset
 from src.dataloaders.dataloader4torch import TorchDataLoader
 from src.utils.stats import load_json
 
 from pipeline.processor import process_data
 
 
-def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader, int, ndarray]:
+def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
     """ Prepare data """
     # Get data
-    features4train, labels4train, features4valid, labels4valid, MAX_SEQ_LEN, computed_weights = process_data()
+    features4train, features4valid, labels4train, labels4valid = process_data()
+    assert len(features4train) == len(labels4train), "Training features and labels length mismatch."
+    assert len(features4valid) == len(labels4valid), "Validation features and labels length mismatch."
 
     # Load dictionary
-    dic: Path = Path(CONFIG4DL.FILEPATHS.DICTIONARY)
-    dictionary: dict = load_json(dic) if dic.exists() else print("Dictionary file not found.")
+    dic_cn: Path = Path(CONFIG4DL.FILEPATHS.DICTIONARY_CN)
+    dictionary_cn: dict = load_json(dic_cn) if dic_cn.exists() else print("Dictionary file not found.")
+    dic_en: Path = Path(CONFIG4DL.FILEPATHS.DICTIONARY_EN)
+    dictionary_en: dict = load_json(dic_en) if dic_en.exists() else print("Dictionary file not found.")
 
     # Set dataset
-    dataset4train = TorchDataset4Seq2Classification(
-        features4train, labels4train,
-        seq_max_len=MAX_SEQ_LEN,
-        pad_token=dictionary[Tokens.PAD]
-    )
-    dataset4valid = TorchDataset4Seq2Classification(
-        features4valid, labels4valid,
-        seq_max_len=MAX_SEQ_LEN,
-        pad_token=dictionary[Tokens.PAD]
-    )
-    # idx4train: int = randint(0, len(dataset4train) - 1)
-    # print(dataset4train[idx4train])
-    # idx4valid: int = randint(0, len(dataset4valid) - 1)
-    # print(dataset4valid[idx4valid])
-    # print()
+    dataset4train = TorchDataset(features4train, labels4train, batch_pad=True)
+    dataset4valid = TorchDataset(features4valid, labels4valid, batch_pad=True)
+    idx4train: int = randint(0, len(dataset4train) - 1)
+    print(dataset4train[idx4train])
+    idx4valid: int = randint(0, len(dataset4valid) - 1)
+    print(dataset4valid[idx4valid])
+    print()
 
     # Set up dataloader
     dataloader4train = TorchDataLoader(
@@ -51,20 +47,33 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader, int, ndarray]:
         batch_size=CONFIG4DL.PREPROCESSOR.BATCHES,
         shuffle_state=CONFIG4DL.PREPROCESSOR.SHUFFLE,
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
+        batch_pad=True,
+        PAD=dictionary_cn[Tokens.PAD],
     )
     dataloader4valid = TorchDataLoader(
         dataset4valid,
         batch_size=CONFIG4DL.PREPROCESSOR.BATCHES,
         shuffle_state=CONFIG4DL.PREPROCESSOR.SHUFFLE,
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
+        batch_pad=True,
+        PAD=dictionary_cn[Tokens.PAD],
     )
-    # idx4train: int = randint(0, len(dataloader4train) - 1)
-    # print(dataloader4train[idx4train])
-    # idx4valid: int = randint(0, len(dataloader4valid) - 1)
-    # print(dataloader4valid[idx4valid])
-    # print()
 
-    return dataloader4train, dataloader4valid, MAX_SEQ_LEN, computed_weights
+    for feature, label in tqdm(
+            dataloader4train._loader,
+            total=len(dataloader4train),
+            desc="Sample a batch from training data"
+    ):
+        print(feature, label)
+        break
+
+    idx4train: int = randint(0, len(dataloader4train) - 1)
+    print(dataloader4train[idx4train])
+    idx4valid: int = randint(0, len(dataloader4valid) - 1)
+    print(dataloader4valid[idx4valid])
+    print()
+
+    return dataloader4train, dataloader4valid
 
 
 if __name__ == "__main__":
