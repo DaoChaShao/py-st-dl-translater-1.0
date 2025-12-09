@@ -40,7 +40,7 @@ from .cfg_dl import CONFIG4DL, Config4DL, DataPreprocessor, Hyperparameters
 from .cfg_mlp import CONFIG4MLP, Configuration4MLP, MLPParams
 from .cfg_rnn import CONFIG4RNN, Configuration4RNN, RNNParams
 from .cfg_unet import CONFIG4UNET, Configuration4UNet, UNetParams
-from .cfg_types import Language, SeqTask, Tokens, LSTMTask
+from .cfg_types import Lang, SeqTask, Tokens, Tasks
 from .parser import set_argument_parser
 
 __all__ = [
@@ -50,6 +50,6 @@ __all__ = [
     "CONFIG4MLP", "Configuration4MLP", "MLPParams",
     "CONFIG4RNN", "Configuration4RNN", "RNNParams",
     "CONFIG4UNET", "Configuration4UNet", "UNetParams",
-    "Language", "SeqTask", "Tokens", "LSTMTask",
+    "Lang", "SeqTask", "Tokens", "Tasks",
     "set_argument_parser"
 ]
