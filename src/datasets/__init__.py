@@ -29,7 +29,7 @@ Usage:
 __author__ = "Shawn Yu"
 __version__ = "0.2.0"
 
-from .label_classification import TorchDataset4LabelClassification
+from .dataset4torch import TorchDataset
 from .reshaper import reshape_to_grayscale
 from .seq_classification import TorchDataset4Seq2Classification
 from .seq_next_step import TorchDataset4SeqPredictionNextStep
@@ -37,7 +37,7 @@ from .mask_mapper import mask2index
 from .sem_seg import TorchDataset4SemanticSegmentation
 
 __all__ = [
-    "TorchDataset4LabelClassification",
+    "TorchDataset",
     "reshape_to_grayscale",
     "TorchDataset4Seq2Classification",
     "TorchDataset4SeqPredictionNextStep",
