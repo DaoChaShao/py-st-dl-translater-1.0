@@ -17,7 +17,7 @@ WIDTH: int = 64
 class SQLiteIII:
     """ SQLiteIII Class for Database """
 
-    def __init__(self, table: str, cols: dict[str, type], db_path: Path | str | None = None):
+    def __init__(self, table: str, cols: dict, db_path: Path | str | None = None):
         """ Initialise SQLiteIII Database
         :param table: table name
         :param cols: column names
