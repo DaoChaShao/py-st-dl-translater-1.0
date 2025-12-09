@@ -3,7 +3,7 @@
 # @Time     :   2025/11/24 23:20
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   label_classification.py
+# @File     :   dataset4torch.py
 # @Desc     :
 
 from numpy import ndarray
@@ -12,24 +12,32 @@ from torch import Tensor, tensor, float32
 from torch.utils.data import Dataset
 
 
-class TorchDataset4LabelClassification(Dataset):
+class TorchDataset(Dataset):
     """ A custom PyTorch Dataset class for handling label features and labels """
 
-    def __init__(self, features, labels):
+    def __init__(self, features, labels, batch_pad: bool = False):
         """ Initialise the TorchDataset class
-        :param features: the feature tensor
-        :param labels: the label tensor
+        :param features: raw features(list/ndarray/DataFrame) or padded Tensor
+        :param labels: raw labels(list/ndarray/DataFrame) or padded Tensor
+        :param batch_pad: if True → keep raw lists, collate_fn will pad them
         """
-        self._features: Tensor = self._to_tensor(features)
-        self._labels: Tensor = self._to_tensor(labels)
+        self._batch_pad = batch_pad
+
+        if self._batch_pad:
+            # Do not convert to tensor here; will be handled in collate_fn
+            self._features = features
+            self._labels = labels
+        else:
+            self._features: Tensor = self._to_tensor(features)
+            self._labels: Tensor = self._to_tensor(labels)
 
     @property
-    def features(self) -> Tensor:
+    def features(self) -> Tensor | list:
         """ Return the feature tensor as a property """
         return self._features
 
     @property
-    def labels(self) -> Tensor:
+    def labels(self) -> Tensor | list:
         """ Return the label tensor as a property """
         return self._labels
 
@@ -54,20 +62,20 @@ class TorchDataset4LabelClassification(Dataset):
         """ Return the total number of samples in the dataset """
         return len(self._features)
 
-    def __getitem__(self, index: int | slice) -> tuple[Tensor, Tensor] | tuple[Tensor, Tensor]:
-        """ Return a single (feature, label) pair or a batch via slice """
-        if isinstance(index, slice):
-            # Return a batch (for example dataset[:5])
-            return self._features[index], self._labels[index]
-        elif isinstance(index, int):
-            # Return a single sample
-            return self._features[index], self._labels[index]
-        else:
-            raise TypeError(f"Invalid index type: {type(index)}")
+    def __getitem__(self, index: int | slice) -> tuple[Tensor, Tensor] | tuple[list, list]:
+        """ Return a single or sliced (feature, label) pair """
+        return self._features[index], self._labels[index]
 
     def __repr__(self):
         """ Return a string representation of the dataset """
-        return f"LabelTorchDataset(features={self._features.shape}, labels={self._labels.shape}, device=cpu)"
+        if self._batch_pad:
+            info4features = f"len={len(self._features)} (unpadded list)"
+            info4labels = f"len={len(self._labels)} (unpadded list)"
+        else:
+            info4features = f"shape={tuple(self._features.shape)}"
+            info4labels = f"shape={tuple(self._labels.shape)}"
+
+        return f"TorchDataset(features={info4features}, labels={info4labels})"
 
 
 if __name__ == "__main__":
