@@ -10,7 +10,7 @@ from pathlib import Path
 from torch import optim, nn, Tensor
 
 from src.configs.cfg_rnn import CONFIG4RNN
-from src.configs.cfg_types import LSTMTask, Tokens
+from src.configs.cfg_types import Tasks, Tokens
 from src.configs.parser import set_argument_parser
 from src.trainers.trainer4torch import TorchTrainer
 from src.nets.gru import GRUNet
@@ -47,7 +47,7 @@ def main() -> None:
             num_classes=CONFIG4RNN.PARAMETERS.CLASSES,
             dropout_rate=CONFIG4RNN.PREPROCESSOR.DROPOUT_RATIO,
             accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
-            task=LSTMTask.CLASSIFICATION,
+            task=Tasks.CLASSIFICATION,
             pad_idx=dictionary[Tokens.PAD]
         )
         """
