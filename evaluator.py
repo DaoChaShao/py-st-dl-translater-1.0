@@ -12,7 +12,7 @@ from torch import Tensor, load, device, no_grad, nn, argmax
 from tqdm import tqdm
 
 from src.configs.cfg_rnn import CONFIG4RNN
-from src.configs.cfg_types import Language, Tokens, LSTMTask
+from src.configs.cfg_types import Lang, Tokens, Tasks
 from src.dataloaders.dataloader4torch import TorchDataLoader
 from src.datasets.seq_classification import TorchDataset4Seq2Classification
 from src.nets.gru import GRUNet
@@ -45,11 +45,11 @@ def main() -> None:
         contents: list[str] = [content for _, content in data]
         if amount is None:
             news: list[list[str]] = spacy_batch_tokeniser(
-                contents, lang=Language.EN, batches=CONFIG4RNN.PREPROCESSOR.BATCHES
+                contents, lang=Lang.EN, batches=CONFIG4RNN.PREPROCESSOR.BATCHES
             )
         else:
             news: list[list[str]] = spacy_batch_tokeniser(
-                contents[:amount], lang=Language.EN, batches=CONFIG4RNN.PREPROCESSOR.BATCHES
+                contents[:amount], lang=Lang.EN, batches=CONFIG4RNN.PREPROCESSOR.BATCHES
             )
         # print(news)
 
@@ -101,7 +101,7 @@ def main() -> None:
                 num_classes=CONFIG4RNN.PARAMETERS.CLASSES,
                 dropout_rate=CONFIG4RNN.PREPROCESSOR.DROPOUT_RATIO,
                 accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
-                task=LSTMTask.CLASSIFICATION,
+                task=Tasks.CLASSIFICATION,
                 pad_idx=dictionary[Tokens.PAD]
             )
             dict_state: dict = load(params, map_location=device(CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR))
