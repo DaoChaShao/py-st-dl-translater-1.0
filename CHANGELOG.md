@@ -1,10 +1,23 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-08)
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-10)
 
 ### Features
 
+- refactor SpaCy tokenization to use context manager and support batch processing ([597e954](https://github.com///commit/597e954c5b6f017e98db1c1514e3f5eceb9fa761))
+- update preprocess_data function for bilingual data processing and storage ([ae1e17d](https://github.com///commit/ae1e17d86c6c799c7e9168cf43142e1dd1bdcee0))
+- update dependencies in pyproject.toml for enhanced functionality ([a3de605](https://github.com///commit/a3de6055a9d9e40ef3f160a3581654eeb55bb315))
+- implement THULACTokeniser class for text tokenization with optional POS tagging ([d0f9589](https://github.com///commit/d0f9589f0c4aa1a467710313573f12dde7d82c99))
+- add sqlite3.db ([ce61c20](https://github.com///commit/ce61c2030abef5896e337c0df70ccc4dcb763a11))
+- add NLTKTokenizer class for text tokenization and detokenization ([7eaecb3](https://github.com///commit/7eaecb3908e16c87ce9e3dcee0e23e55c8e2482c))
+- add cmn.txt ([aaf8d5a](https://github.com///commit/aaf8d5a967ef4781573428ec1eeb50c75abfa9bd))
+- rename Language and LSTMTask to Lang and Tasks in cfg_types.py ([242308b](https://github.com///commit/242308bdcd0cd8d86114034c18088b5be5eef163))
+- update file paths in cfg_base.py for data source consistency ([aa5963c](https://github.com///commit/aa5963c896357ccd62744d108ced327aad089dbf))
+- update imports and __all__ exports in __init__.py for tokenizer consistency ([5e678bc](https://github.com///commit/5e678bc8c8d39edcee056208a3250917cf8fabd7))
+- rename TorchDataset4LabelClassification to TorchDataset in __init__.py ([78b254f](https://github.com///commit/78b254f5791f5bbb7f8ef3deba6176b20cc469e3))
+- rename Language and LSTMTask to Lang and Tasks in __init__.py ([a89768e](https://github.com///commit/a89768edce77361ab93191363d7f05c3dc844a93))
+- update CHANGELOG.md with recent additions and updates ([0c50839](https://github.com///commit/0c50839c1fec220b64ed2193d7de20d9d6ba0bab))
 - add Chinese README.md for project overview, setup instructions, and privacy notice ([7bd7f8a](https://github.com///commit/7bd7f8a9a09cc198e8ce8cf08c670c29eee946d9))
 - add comprehensive README.md for project overview, setup instructions, and privacy notice ([26a2a16](https://github.com///commit/26a2a163f12eec6378275f0cd03601a187789929))
 - update CHANGELOG.md with recent feature additions and updates ([a1126f1](https://github.com///commit/a1126f1b065bf6db7cdb539c4291065c208d0543))
@@ -49,7 +62,6 @@
 - add GRUNet model for multi-class classification tasks ([31a571f](https://github.com///commit/31a571fd70c7b24986e8822365278592ff67ea93))
 - add decorators for function beautification and timing ([2717a91](https://github.com///commit/2717a9190d2be6e287561400145916074d734b50))
 - add custom TorchDataLoader class for PyTorch datasets ([86d34ff](https://github.com///commit/86d34ff28d284f6fd9f2af1ce3ff30e94b3a57a4))
-- add cmn.txt ([9afbf2c](https://github.com///commit/9afbf2c398d88bbff693b8c9c24e3891a22f7106))
 - add configuration management for UNet parameters and settings ([f77e66e](https://github.com///commit/f77e66e33ce3531c90df9eb9a0fc217225c71ac9))
 - add configuration management for sequence tasks and token types ([7b996e4](https://github.com///commit/7b996e4877f2f3d317aff12ed871a9a9098aeaf2))
 - add configuration management for RNN parameters and settings ([9340d9c](https://github.com///commit/9340d9cb0547d6776cac38470b97635b8903ff97))
@@ -73,9 +85,27 @@
 
 ### Bug Fixes
 
+- correct shebang formatting in main.py ([2552f11](https://github.com///commit/2552f1136de5ac86dca232ed74f38841e425ee6f))
+- add uv.lock ([8f28913](https://github.com///commit/8f289132b7fa66bd42e01c35e1924c8a532f46c8))
+- update type hint for cols parameter in SQLiteIII constructor ([634ecc6](https://github.com///commit/634ecc638a573f21da49194df63fa74a19957324))
 - add missing newline at end of main.py ([22d4ab0](https://github.com///commit/22d4ab0da8987b91ee04dde12670d876b0ce43e2))
 
 ### Chore
 
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
+
+### Docs
+
+- add English dictionary file dictionary_en.json ([dc76f57](https://github.com///commit/dc76f5709792c8f551f8214c7eea9962ac0d8369))
+- add dictionary_cn.json ([0e98a06](https://github.com///commit/0e98a06eb77ceac36994a4ab960a37024fc93bbd))
+
+### Code Refactoring
+
+- simplify data preparation in prepper.py and enhance dataset loading ([9a011d5](https://github.com///commit/9a011d5c03782fe8e58f14f74db91227cec84bb0))
+- enhance TorchDataLoader with batch padding support and custom collate function ([39b469b](https://github.com///commit/39b469bcd7a78e921b43d5b36df82e61480a5b6f))
+- update task import in trainer.py for consistency ([553518d](https://github.com///commit/553518de52d53eed4de33a32be26a570ac8c826e))
+- optimize data processing in processor.py with database connection and batch tokenization ([c75e481](https://github.com///commit/c75e4813c9027d05d6b30e2bb0b22292b6e62fc1))
+- rename label_classification.py to dataset4torch.py and update dataset class for batch processing support ([1fde367](https://github.com///commit/1fde367278d70800d4bbc2d3d4772cf9172be9a3))
+- update imports and variable references in predictor.py for consistency ([6cb12c1](https://github.com///commit/6cb12c13ed239cb012f0be38f0c2d913e42fcb35))
+- update imports in evaluator.py for consistency and clarity ([4e5f4e2](https://github.com///commit/4e5f4e2312928c7c286a1012aa3a88315ff1035a))
 
