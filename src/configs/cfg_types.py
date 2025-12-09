@@ -21,7 +21,7 @@ class SeqTask(StrEnum):
 
 
 @unique
-class Language(StrEnum):
+class Lang(StrEnum):
     CN = "cn"
     EN = "en"
 
@@ -30,12 +30,13 @@ class Language(StrEnum):
 class Tokens(StrEnum):
     PAD = "<PAD>"
     UNK = "<UNK>"
-    SOS = "<SOS>"
+    SOS = "<SOS>"  # Or, call it BOS (Beginning of Sequence)
     EOS = "<EOS>"
+    MASK = "<MASK>"
 
 
 @unique
-class LSTMTask(StrEnum):
+class Tasks(StrEnum):
     CLASSIFICATION = "classification"
     GENERATION = "generation"
 
