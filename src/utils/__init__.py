@@ -44,9 +44,10 @@ from .highlighter import (black, red, green, yellow, blue, purple, cyan, white,
                           bold, underline, invert, strikethrough,
                           starts, lines, sharps)
 from .logger import record_log
+from .NLTK import NLTKTokenizer
 from .nlp import (regular_chinese, regular_english,
-                  count_frequency, unique_characters, extract_zh_chars,
-                  spacy_single_tokeniser, spacy_batch_tokeniser,
+                  count_frequency, unique_characters, extract_cn_chars,
+                  SpaCyBatchTokeniser,
                   build_word2id_seqs,
                   check_vocab_coverage)
 from .PT import (TorchRandomSeed,
@@ -64,7 +65,7 @@ from .stats import (NumpyRandomSeed,
                     pca_importance,
                     get_correlation_btw_features,
                     get_categories_corr_ratio, get_correlation_btw_Xy)
-from .THU import cut_pos as thu_cut_pos, cut_only
+from .THU import THULACTokeniser
 
 __all__ = [
     "OpenAITextCompleter", "OpenAIImageCompleter",
@@ -81,9 +82,11 @@ __all__ = [
 
     "record_log",
 
+    "NLTKTokenizer",
+
     "regular_chinese", "regular_english",
-    "count_frequency", "unique_characters", "extract_zh_chars",
-    "spacy_single_tokeniser", "spacy_batch_tokeniser",
+    "count_frequency", "unique_characters", "extract_cn_chars",
+    "SpaCyBatchTokeniser",
     "build_word2id_seqs",
     "check_vocab_coverage",
 
@@ -105,5 +108,5 @@ __all__ = [
     "get_correlation_btw_features",
     "get_categories_corr_ratio", "get_correlation_btw_Xy",
 
-    "thu_cut_pos", "cut_only",
+    "THULACTokeniser",
 ]
