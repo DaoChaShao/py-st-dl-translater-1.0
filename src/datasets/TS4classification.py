@@ -3,14 +3,14 @@
 # @Time     :   2025/11/24 22:59
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   lstm.py
+# @File     :   lstm4classification.py
 # @Desc     :   
 
 from torch import tensor, long, Tensor
 from torch.utils.data import Dataset
 
 
-class TorchDataset4Seq2Classification(Dataset):
+class TimeSeriesTorchDatasetForClassification(Dataset):
     """ A custom PyTorch Dataset class for handling sequential features and labels """
 
     def __init__(self, feature_seqs: list, lbl_seqs: list, seq_max_len: int, pad_token: int = 0) -> None:
