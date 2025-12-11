@@ -8,6 +8,7 @@
 
 from numpy import ndarray
 from pandas import DataFrame, Series
+from random import choice
 from torch import Tensor, tensor, float32
 from torch.utils.data import Dataset
 
@@ -15,21 +16,21 @@ from torch.utils.data import Dataset
 class TorchDataset(Dataset):
     """ A custom PyTorch Dataset class for handling label features and labels """
 
-    def __init__(self, features, labels, batch_pad: bool = False):
+    def __init__(self, features, labels, use_batch_pad: bool = False):
         """ Initialise the TorchDataset class
         :param features: raw features(list/ndarray/DataFrame) or padded Tensor
         :param labels: raw labels(list/ndarray/DataFrame) or padded Tensor
-        :param batch_pad: if True → keep raw lists, collate_fn will pad them
+        :param use_batch_pad: if True → keep raw lists, collate_fn will pad them
         """
-        self._batch_pad = batch_pad
+        self._set_var_len = use_batch_pad
 
-        if self._batch_pad:
+        if self._set_var_len:
             # Do not convert to tensor here; will be handled in collate_fn
-            self._features = features
-            self._labels = labels
+            self._features = self._to_list_var_len_tensor(features)
+            self._labels = self._to_list_var_len_tensor(labels)
         else:
-            self._features: Tensor = self._to_tensor(features)
-            self._labels: Tensor = self._to_tensor(labels)
+            self._features: Tensor = self._to_equal_len_tensor(features)
+            self._labels: Tensor = self._to_equal_len_tensor(labels)
 
     @property
     def features(self) -> Tensor | list:
@@ -42,7 +43,7 @@ class TorchDataset(Dataset):
         return self._labels
 
     @staticmethod
-    def _to_tensor(data: DataFrame | Tensor | ndarray | list) -> Tensor:
+    def _to_equal_len_tensor(data: DataFrame | Tensor | ndarray | list) -> Tensor:
         """ Convert input data to a PyTorch tensor on the specified device
         :param data: the input data (DataFrame, ndarray, list, or Tensor)
         :return: the converted PyTorch tensor
@@ -58,6 +59,19 @@ class TorchDataset(Dataset):
 
         return out
 
+    @staticmethod
+    def _to_list_var_len_tensor(data: DataFrame | Tensor | ndarray | list) -> list[Tensor]:
+        if isinstance(data, list):
+            return [tensor(item, dtype=float32) for item in data]
+        elif isinstance(data, (DataFrame, ndarray)):
+            if isinstance(data, DataFrame):
+                data = data.values
+            return [tensor(row, dtype=float32) for row in data]
+        elif isinstance(data, Tensor):
+            return [data[i] for i in range(len(data))]
+        else:
+            raise TypeError(f"Unsupported data type: {type(data)}")
+
     def __len__(self) -> int:
         """ Return the total number of samples in the dataset """
         return len(self._features)
@@ -68,9 +82,9 @@ class TorchDataset(Dataset):
 
     def __repr__(self):
         """ Return a string representation of the dataset """
-        if self._batch_pad:
-            info4features = f"len={len(self._features)} (unpadded list)"
-            info4labels = f"len={len(self._labels)} (unpadded list)"
+        if self._set_var_len:
+            info4features = f"len={len(self._features)} (unpadded tensor list)"
+            info4labels = f"len={len(self._labels)} (unpadded tensor list)"
         else:
             info4features = f"shape={tuple(self._features.shape)}"
             info4labels = f"shape={tuple(self._labels.shape)}"
@@ -79,4 +93,39 @@ class TorchDataset(Dataset):
 
 
 if __name__ == "__main__":
-    pass
+    var_len: bool = choice([True, False])
+    print(f"{var_len}: Set Var Length") if var_len else print(f"{var_len}: Set Equal Length")
+
+    if var_len:
+        cn = [
+            [1, 2, 3],
+            [4, 5, 6, 7, 8],
+            [9, 10]
+        ]
+        en = [
+            [2, 11, 12, 13, 3],
+            [2, 14, 15, 16, 17, 3],
+            [2, 18, 19, 20, 3]
+        ]
+
+        dataset = TorchDataset(features=cn, labels=en, use_batch_pad=True)
+
+        for i in range(len(dataset)):
+            feature, label = dataset[i]
+            print(f"Sample {i + 1}: feature={feature}, label={label}")
+        """
+        True: Set Var Length
+        Sample 1: feature=tensor([1., 2., 3.]), label=tensor([ 2., 11., 12., 13.,  3.])
+        Sample 2: feature=tensor([4., 5., 6., 7., 8.]), label=tensor([ 2., 14., 15., 16., 17.,  3.])
+        Sample 3: feature=tensor([ 9., 10.]), label=tensor([ 2., 18., 19., 20.,  3.])
+        """
+    else:
+        features = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
+        labels = [0, 1, 0]
+
+        dataset = TorchDataset(features, labels, use_batch_pad=False)
+        print(dataset)
+        """
+        False: Set Equal Length
+        TorchDataset(features=shape=(3, 3), labels=shape=(3,))
+        """
