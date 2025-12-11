@@ -13,7 +13,7 @@ from src.configs.cfg_rnn import CONFIG4RNN
 from src.configs.cfg_types import Tasks, Tokens
 from src.configs.parser import set_argument_parser
 from src.trainers.trainer4torch import TorchTrainer
-from src.nets.gru import GRUNet
+from src.nets.gru4classification import GRUClassifier
 from src.utils.PT import item2tensor
 from src.utils.stats import load_json
 from src.utils.PT import TorchRandomSeed
@@ -39,7 +39,7 @@ def main() -> None:
         vocab_size: int = len(dictionary)
 
         # Initialize model
-        model = GRUNet(
+        model = GRUClassifier(
             vocab_size=vocab_size,
             embedding_dim=CONFIG4RNN.PARAMETERS.EMBEDDING_DIM,
             hidden_size=CONFIG4RNN.PARAMETERS.HIDDEN_SIZE,
