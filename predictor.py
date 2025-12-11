@@ -13,7 +13,7 @@ from torch import Tensor, load, device, no_grad, nn, tensor, long, argmax
 
 from src.configs.cfg_rnn import CONFIG4RNN
 from src.configs.cfg_types import Lang, Tokens, Tasks
-from src.nets.gru import GRUNet
+from src.nets.gru4classification import GRUClassifier
 from src.utils.apis import OpenAITextCompleter
 from src.utils.helper import Timer, read_yaml
 from src.utils.highlighter import red, green, yellow, blue, purple
@@ -79,7 +79,7 @@ def main() -> None:
             print(f"Model {params.name} Exists!")
 
             # Set up a model and load saved parameters
-            model = GRUNet(
+            model = GRUClassifier(
                 len(dictionary),
                 embedding_dim=CONFIG4RNN.PARAMETERS.EMBEDDING_DIM,
                 hidden_size=CONFIG4RNN.PARAMETERS.HIDDEN_SIZE,
