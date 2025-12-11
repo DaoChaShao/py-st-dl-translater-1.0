@@ -3,7 +3,7 @@
 # @Time     :   2025/12/4 01:48
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   rnn.py
+# @File     :   rnn4classification.py
 # @Desc     :   
 
 from torch import nn, zeros, randint, device, cat, Tensor, arange
@@ -11,15 +11,14 @@ from torch import nn, zeros, randint, device, cat, Tensor, arange
 WIDTH: int = 64
 
 
-class RNNNet(nn.Module):
+class RNNClassifier(nn.Module):
     """ A normal RNN model for multi-class classification tasks using PyTorch """
 
-    def __init__(
-            self,
-            vocab_size: int, embedding_dim: int, hidden_size: int, num_layers: int,
-            num_classes: int, dropout_rate: float = 0.3, bid: bool = True,
-            accelerator: str = "cpu", task: str = "classification", pad_idx: int = 0
-    ):
+    def __init__(self,
+                 vocab_size: int, embedding_dim: int, hidden_size: int, num_layers: int,
+                 num_classes: int, dropout_rate: float = 0.3, bid: bool = True,
+                 accelerator: str = "cpu", task: str = "classification", pad_idx: int = 0
+                 ):
         super().__init__()
         """ Initialise the CharsRNNModel class
         :param vocab_size: size of the vocabulary
@@ -135,7 +134,7 @@ if __name__ == "__main__":
     seq_len: int = 111
 
     # Initialise the model
-    model = RNNNet(
+    model = RNNClassifier(
         vocab_size=vocab_size,
         embedding_dim=128,
         hidden_size=256,
