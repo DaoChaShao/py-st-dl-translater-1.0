@@ -3,7 +3,7 @@
 # @Time     :   2025/12/8 16:44
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   gru.py
+# @File     :   gru4classification.py
 # @Desc     :   
 
 from torch import nn, cat, zeros, device, Tensor, arange
@@ -11,7 +11,7 @@ from torch import nn, cat, zeros, device, Tensor, arange
 WIDTH: int = 64
 
 
-class GRUNet(nn.Module):
+class GRUClassifier(nn.Module):
     """ AN GRU model for multi-class classification tasks using PyTorch """
 
     def __init__(
