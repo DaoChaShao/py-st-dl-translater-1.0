@@ -33,8 +33,8 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
     dictionary_en: dict = load_json(dic_en) if dic_en.exists() else print("Dictionary file not found.")
 
     # Set dataset
-    dataset4train = TorchDataset(features4train, labels4train, batch_pad=True)
-    dataset4valid = TorchDataset(features4valid, labels4valid, batch_pad=True)
+    dataset4train = TorchDataset(features4train, labels4train, use_batch_pad=True)
+    dataset4valid = TorchDataset(features4valid, labels4valid, use_batch_pad=True)
     idx4train: int = randint(0, len(dataset4train) - 1)
     print(dataset4train[idx4train])
     idx4valid: int = randint(0, len(dataset4valid) - 1)
@@ -47,31 +47,31 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
         batch_size=CONFIG4DL.PREPROCESSOR.BATCHES,
         shuffle_state=CONFIG4DL.PREPROCESSOR.SHUFFLE,
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
-        batch_pad=True,
-        PAD=dictionary_cn[Tokens.PAD],
+        use_batch_pad=True,
+        FEATURES_PAD_VALUE=dictionary_cn[Tokens.PAD],
     )
     dataloader4valid = TorchDataLoader(
         dataset4valid,
         batch_size=CONFIG4DL.PREPROCESSOR.BATCHES,
         shuffle_state=CONFIG4DL.PREPROCESSOR.SHUFFLE,
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
-        batch_pad=True,
-        PAD=dictionary_cn[Tokens.PAD],
+        use_batch_pad=True,
+        FEATURES_PAD_VALUE=dictionary_cn[Tokens.PAD],
     )
 
-    for feature, label in tqdm(
-            dataloader4train._loader,
-            total=len(dataloader4train),
-            desc="Sample a batch from training data"
-    ):
-        print(feature, label)
-        break
-
-    idx4train: int = randint(0, len(dataloader4train) - 1)
-    print(dataloader4train[idx4train])
-    idx4valid: int = randint(0, len(dataloader4valid) - 1)
-    print(dataloader4valid[idx4valid])
-    print()
+    # for feature, label in tqdm(
+    #         dataloader4train._loader,
+    #         total=len(dataloader4train),
+    #         desc="Sample a batch from training data"
+    # ):
+    #     print(feature, label)
+    #     break
+    #
+    # idx4train: int = randint(0, len(dataloader4train) - 1)
+    # print(dataloader4train[idx4train])
+    # idx4valid: int = randint(0, len(dataloader4valid) - 1)
+    # print(dataloader4valid[idx4valid])
+    # print()
 
     return dataloader4train, dataloader4valid
 
