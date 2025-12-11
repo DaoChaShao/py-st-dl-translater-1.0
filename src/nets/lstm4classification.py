@@ -3,7 +3,7 @@
 # @Time     :   2025/11/24 23:45
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   lstm.py
+# @File     :   lstm4classification.py
 # @Desc     :   
 
 from torch import nn, cat, zeros, device, randint, arange, Tensor
@@ -11,7 +11,7 @@ from torch import nn, cat, zeros, device, randint, arange, Tensor
 WIDTH: int = 64
 
 
-class LSTMNet(nn.Module):
+class LSTMClassifier(nn.Module):
     """ A LSTM model for multi-class classification tasks using PyTorch """
 
     def __init__(
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     batch_size = 16
     seq_len = 111
 
-    model = LSTMNet(
+    model = LSTMClassifier(
         vocab_size=vocab_size,
         embedding_dim=128,
         hidden_size=256,
