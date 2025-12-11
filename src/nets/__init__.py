@@ -30,16 +30,18 @@ Usage:
 __author__ = "Shawn Yu"
 __version__ = "0.2.0"
 
-from .gru import GRUNet
-from .lstm import LSTMNet
-from .rnn import RNNNet
+from .gru4classification import GRUClassifier
+from .seq2seq import GRUSeqToSeqCoder
+from .lstm4classification import LSTMClassifier
+from .rnn4classification import RNNClassifier
 from .unet4layers4sem import Standard4LayersUNetClassification
 from .unet5layers4sem import Standard5LayersUNetForClassification
 
 __all__ = [
-    "GRUNet",
-    "LSTMNet",
-    "RNNNet",
+    "GRUClassifier",
+    "GRUSeqToSeqCoder",
+    "LSTMClassifier",
+    "RNNClassifier",
     "Standard4LayersUNetClassification",
     "Standard5LayersUNetForClassification",
 ]
