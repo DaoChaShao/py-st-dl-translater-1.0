@@ -33,6 +33,7 @@ class Tokens(StrEnum):
     SOS = "<SOS>"  # Or, call it BOS (Beginning of Sequence)
     EOS = "<EOS>"
     MASK = "<MASK>"
+    BOS = "<BOS>"  # Beginning of Sequence
 
 
 @unique
