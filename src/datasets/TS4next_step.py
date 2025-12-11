@@ -3,14 +3,14 @@
 # @Time     :   2025/11/24 22:57
 # @Author   :   Shawn
 # @Version  :   Version 0.1.0
-# @File     :   seq_next_step.py
+# @File     :   TS4next_step.py
 # @Desc     :   
 
 from torch import Tensor, tensor
 from torch.utils.data import Dataset
 
 
-class TorchDataset4SeqPredictionNextStep(Dataset):
+class TimeSeriesTorchDatasetForPredNextStep(Dataset):
     """ A custom PyTorch Dataset class for handling sequential features and labels """
 
     def __init__(self, sequences: list, seq_max_len: int, mode: str, pad_token: int) -> None:
