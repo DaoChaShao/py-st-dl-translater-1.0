@@ -1,10 +1,11 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-10)
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-12)
 
 ### Features
 
+- add GRU-based sequence-to-sequence model implementation ([afd0680](https://github.com///commit/afd06804c6558552a870c6810f62823a4adc3857))
 - refactor SpaCy tokenization to use context manager and support batch processing ([597e954](https://github.com///commit/597e954c5b6f017e98db1c1514e3f5eceb9fa761))
 - update preprocess_data function for bilingual data processing and storage ([ae1e17d](https://github.com///commit/ae1e17d86c6c799c7e9168cf43142e1dd1bdcee0))
 - update dependencies in pyproject.toml for enhanced functionality ([a3de605](https://github.com///commit/a3de6055a9d9e40ef3f160a3581654eeb55bb315))
@@ -96,11 +97,26 @@
 
 ### Docs
 
+- update CHANGELOG.md with recent feature additions and updates ([b3d6aad](https://github.com///commit/b3d6aade2a7ccfbb01628f2ceaff403315457d04))
 - add English dictionary file dictionary_en.json ([dc76f57](https://github.com///commit/dc76f5709792c8f551f8214c7eea9962ac0d8369))
 - add dictionary_cn.json ([0e98a06](https://github.com///commit/0e98a06eb77ceac36994a4ab960a37024fc93bbd))
 
 ### Code Refactoring
 
+- rename seq_next_step.py to TS4next_step.py and update class name to TimeSeriesTorchDatasetForPredNextStep ([0619dc6](https://github.com///commit/0619dc64ca351a29187b67fd0c8bf37320afb55a))
+- rename seq_classification.py to TS4classification.py and update class name to TimeSeriesTorchDatasetForClassification ([b542194](https://github.com///commit/b542194fd07bdf8c7e096d9079aed4fcebd172ef))
+- update trainer to use GRUClassifier from gru4classification ([bac6ec4](https://github.com///commit/bac6ec426c0742cd24310bc94679b020d8540e77))
+- rename rnn.py to rnn4classification.py and update class name to RNNClassifier ([d47989b](https://github.com///commit/d47989b8c293a2e7f8d945d09064b7a4e62f4ecf))
+- update TorchDataset initialization to use 'use_batch_pad' and 'FEATURES_PAD_VALUE' ([f2176bb](https://github.com///commit/f2176bbd93c704895eaa8dd787925816ee8e454e))
+- update predictor to use GRUClassifier from gru4classification ([e824dc0](https://github.com///commit/e824dc05450e3d8a6f9d799db2afef9f4f8dbcf1))
+- rename lstm.py to lstm4classification.py and update class name to LSTMClassifier ([24af0b9](https://github.com///commit/24af0b900c14eb0a4536540803e1e001d6ffd4ba))
+- rename gru.py to gru4classification.py and update class name to GRUClassifier ([f5fe21f](https://github.com///commit/f5fe21fc0f5b2da1424b4910786104d6257b636c))
+- update evaluator to use TimeSeriesTorchDatasetForClassification and GRUClassifier ([4fefc50](https://github.com///commit/4fefc501c4c62853776747301986e510ca01a0d6))
+- update TorchDataset to support variable-length tensors and improve padding logic ([65d7ebe](https://github.com///commit/65d7ebe03567c2c0c26c35a6de0a22abd221642a))
+- enhance TorchDataLoader to support separate padding values for features and labels ([34cd6c8](https://github.com///commit/34cd6c8bd003c242b90b738965f61807c30a9314))
+- add Beginning of Sequence (BOS) token to cfg_types.py ([d547679](https://github.com///commit/d547679a472de28464e933b1b991458e7a392ee6))
+- update model imports in __init__.py for classification tasks ([9489b82](https://github.com///commit/9489b8281c497fee91fc06f8aecb340591d97ad2))
+- update dataset imports in __init__.py for time series classification and prediction ([cb99ee9](https://github.com///commit/cb99ee94ecd4e2e9fbbb1e92e633590406a55321))
 - simplify data preparation in prepper.py and enhance dataset loading ([9a011d5](https://github.com///commit/9a011d5c03782fe8e58f14f74db91227cec84bb0))
 - enhance TorchDataLoader with batch padding support and custom collate function ([39b469b](https://github.com///commit/39b469bcd7a78e921b43d5b36df82e61480a5b6f))
 - update task import in trainer.py for consistency ([553518d](https://github.com///commit/553518de52d53eed4de33a32be26a570ac8c826e))
