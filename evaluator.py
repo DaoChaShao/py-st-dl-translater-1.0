@@ -14,8 +14,8 @@ from tqdm import tqdm
 from src.configs.cfg_rnn import CONFIG4RNN
 from src.configs.cfg_types import Lang, Tokens, Tasks
 from src.dataloaders.dataloader4torch import TorchDataLoader
-from src.datasets.seq_classification import TorchDataset4Seq2Classification
-from src.nets.gru import GRUNet
+from src.datasets.TS4classification import TimeSeriesTorchDatasetForClassification
+from src.nets.gru4classification import GRUClassifier
 from src.utils.helper import Timer
 from src.utils.highlighter import starts, lines, red, green
 from src.utils.nlp import spacy_batch_tokeniser, build_word2id_seqs
@@ -66,7 +66,7 @@ def main() -> None:
 
         # Set up dataset
         MAX_SEQ_LEN: int = 48
-        dataset = TorchDataset4Seq2Classification(
+        dataset = TimeSeriesTorchDatasetForClassification(
             sequences, labels,
             seq_max_len=MAX_SEQ_LEN,
             pad_token=dictionary[Tokens.PAD]
@@ -93,7 +93,7 @@ def main() -> None:
             print(f"Model {params.name} Exists!")
 
             # Set up a model and load saved parameters
-            model = GRUNet(
+            model = GRUClassifier(
                 len(dictionary),
                 embedding_dim=CONFIG4RNN.PARAMETERS.EMBEDDING_DIM,
                 hidden_size=CONFIG4RNN.PARAMETERS.HIDDEN_SIZE,
