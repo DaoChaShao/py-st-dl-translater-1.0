@@ -6,9 +6,12 @@
 # @File     :   seq2seq.py
 # @Desc     :   
 
-from torch import (nn, Tensor,
+from math import log
+from torch import (nn, Tensor, tensor,
                    full, long, cat,
-                   randint, )
+                   randint, ones, bool as torch_bool, where, full_like, empty,
+                   topk)
+from torch.xpu import device
 
 from src.utils.highlighter import starts, lines
 
@@ -117,7 +120,8 @@ class SeqToSeqCoder(nn.Module):
                  embedding_dim: int, hidden_size: int, num_layers: int,
                  dropout_rate: float = 0.3, bid: bool = True,
                  pad_idx4input: int = 0, pad_idx4output: int = 0,
-                 net_category: str = "gru"
+                 net_category: str = "gru",
+                 SOS: int = 2, EOS: int = 3,
                  ):
         super().__init__()
         """ Initialise the SeqToSeqRNN class
@@ -132,6 +136,8 @@ class SeqToSeqCoder(nn.Module):
         :param pad_idx4output: padding index for the output embedding layer
         :param accelerator: computation accelerator (e.g., 'cpu', 'cuda')
         :param net_category: network category (e.g., 'gru')
+        :param SOS: start-of-sequence token index
+        :param EOS: end-of-sequence token index
         """
         self._L4IN = vocab_size4input  # Lexicon/Vocabulary size for encoder / input
         self._L4OUT = vocab_size4output  # Lexicon/Vocabulary size for decoder / output
@@ -140,6 +146,8 @@ class SeqToSeqCoder(nn.Module):
         self._C = num_layers  # RNN layers count
         self._bid = bid  # Bidirectional flag for encoder
         self._type = net_category  # Network category
+        self._SOS = SOS  # Start-of-Sequence token index
+        self._EOS = EOS  # End-of-Sequence token index
 
         self._encoder = SeqEncoder(
             self._L4IN, self._H, self._M, self._C,
@@ -215,15 +223,40 @@ class SeqToSeqCoder(nn.Module):
         print(f"Trainable Parameters: {trainable_params:,}")
         print("*" * WIDTH)
 
-    def generate(self, src: Tensor, max_len: int = 50):
-        """ Regression generate automatically """
+    def generate(self, src: Tensor, max_len: int = 100, strategy: str = "greedy", beam_width: int = 5) -> Tensor:
+        """ Regression generate automatically
+        :param src: source/input tensor
+        :param max_len: maximum length of the generated sequence
+        :param strategy: generation strategy ("greedy" or beam")
+        :param beam_width: beam width for beam search (if applicable)
+        :return: generated sequence tensor
+        """
         batch_size = src.size(0)
 
         # Encoder
         encoder_outputs, encoder_hidden, lengths = self._encoder(src)
 
-        # Decoder
+        match strategy:
+            case "greedy":
+                return self._greedy_decode(encoder_hidden, batch_size, max_len, src.device)
+            case "beam":
+                return self._beam_search_decode(encoder_hidden, batch_size, max_len, beam_width, src.device)
+            case _:
+                raise ValueError(f"Unknown generation strategy: {strategy}")
+
+    def _greedy_decode(self,
+                       encoder_hidden: tuple | Tensor, batch_size: int, max_len: int, accelerator: device
+                       ) -> Tensor:
+        """ Greedy decoding implementation
+        :param encoder_hidden: encoder hidden state
+        :param batch_size: batch size
+        :param max_len: maximum length of the generated sequence
+        :param accelerator: device of the source tensor
+        :return: generated sequence tensor
+        """
+        # Decoder state initialization
         if self._type == "lstm":
+            # LSTM: encoder_hidden is tuple (h, c)
             h, c = encoder_hidden
             if self._bid:
                 B = h.size(1)
@@ -233,7 +266,7 @@ class SeqToSeqCoder(nn.Module):
             else:
                 decoder_hidden = (h, c)
         else:
-            # GRU
+            # GRU/RNN: encoder_hidden is Tensor
             h = encoder_hidden
             if self._bid:
                 B = h.size(1)
@@ -243,22 +276,134 @@ class SeqToSeqCoder(nn.Module):
                 decoder_hidden = (h,)  # tuple
 
         # Start from SOS token (assumed to be index 1)
-        decoder_input = full((batch_size, 1), 1, dtype=long, device=src.device)
+        decoder_input = full((batch_size, 1), self._SOS, dtype=long, device=accelerator)
         generated = []
 
-        for _ in range(max_len):
-            logits, decoder_hidden = self._decoder(decoder_input, decoder_hidden)
-            # Greedy
-            next_token = logits.argmax(dim=2)
-            generated.append(next_token)
+        # Track which sequences are still active, sequences mask
+        active = ones(batch_size, dtype=torch_bool, device=accelerator)
 
-            # Assume all the next tokens is EOS, stop it
-            if (next_token == 2).all():
+        for step in range(max_len):
+            if not active.any():  # All sequences have finished
                 break
 
+            logits, decoder_hidden = self._decoder(decoder_input, decoder_hidden)
+
+            next_token = logits.argmax(dim=2)
+            next_token = where(active.unsqueeze(1), next_token, full_like(next_token, self._EOS))
+
+            # Only update active sequences
+            generated.append(next_token)
+
+            # Update active mask
+            active = active & (next_token.squeeze(1) != self._EOS)
+
+            # Prepare next input
             decoder_input = next_token
 
-        return cat(generated, dim=1)
+        return cat(generated, dim=1) if generated else empty((batch_size, 0), dtype=long, device=accelerator)
+
+    def _beam_search_decode(self,
+                            encoder_hidden: tuple | Tensor,
+                            batch_size: int, max_len: int, beam_width: int, accelerator: device
+                            ) -> Tensor:
+        """ Beam search decoding implementation
+        :param encoder_hidden: encoder hidden state
+        :param batch_size: batch size
+        :param max_len: maximum length of the generated sequence
+        :param beam_width: beam width for beam search
+        :param accelerator: device of the source tensor
+        :return: generated sequence tensor
+        """
+        # Decoder state initialization
+        if self._type == "lstm":
+            h, c = encoder_hidden
+            if self._bid:
+                B = h.size(1)
+                h = h.view(self._C, 2, B, self._M)
+                c = c.view(self._C, 2, B, self._M)
+                initial_hidden = ((h[:, 0] + h[:, 1]) / 2, (c[:, 0] + c[:, 1]) / 2)
+            else:
+                initial_hidden = (h, c)
+        else:
+            h = encoder_hidden
+            if self._bid:
+                B = h.size(1)
+                h = h.view(self._C, 2, B, self._M)
+                initial_hidden = ((h[:, 0] + h[:, 1]) / 2,)
+            else:
+                initial_hidden = (h,)
+
+        # Set beam search variables for each sample in the batch
+        results = []
+
+        for idx in range(batch_size):
+            if isinstance(initial_hidden, tuple):
+                if len(initial_hidden) == 2:
+                    # LSTM
+                    h_batch = initial_hidden[0][:, idx:idx + 1]
+                    c_batch = initial_hidden[1][:, idx:idx + 1]
+                    batch_hidden = (h_batch, c_batch)
+                else:
+                    # GRU
+                    batch_hidden = (initial_hidden[0][:, idx:idx + 1],)
+            else:
+                batch_hidden = initial_hidden[:, idx:idx + 1]
+
+            # Initialize beams
+            beams = [{
+                "tokens": [self._SOS],
+                "score": 0.0,
+                "hidden": batch_hidden,
+                "finished": False
+            }]
+
+            for step in range(max_len):
+                new_beams = []
+
+                for beam in beams:
+                    if beam["finished"]:
+                        new_beams.append(beam)
+                        continue
+
+                    # Get last token and prepare input
+                    last_token = beam["tokens"][-1]
+                    input_token = tensor([[last_token]], device=accelerator)
+
+                    # Decode step
+                    logits, new_hidden = self._decoder(input_token, beam["hidden"])
+                    probs = nn.functional.softmax(logits[:, -1, :], dim=-1)
+
+                    # Get top k candidates（k = beam_width）
+                    top_k_probs, top_k_indices = topk(probs, beam_width, dim=-1)
+
+                    for i in range(beam_width):
+                        token = top_k_indices[0, i].item()
+                        token_prob = top_k_probs[0, i].item()
+
+                        new_beam = {
+                            "tokens": beam["tokens"] + [token],
+                            "score": beam["score"] + log(token_prob + 1e-10),  # Probability to log-probability
+                            "hidden": new_hidden,
+                            "finished": (token == self._EOS)
+                        }
+                        new_beams.append(new_beam)
+
+                # Sort and select top beams
+                beams = sorted(new_beams, key=lambda x: x["score"], reverse=True)[:beam_width]
+
+                # Stop if all beams are finished
+                if all(beam["finished"] for beam in beams):
+                    break
+
+            # Select the best beam
+            best_beam = beams[0]
+            # Collect result tokens excluding SOS
+            result_tokens = best_beam["tokens"][1:]  # Exclude SOS token
+            result_tensor = tensor(result_tokens, device=accelerator)
+
+            results.append(result_tensor)
+
+        return nn.utils.rnn.pad_sequence(results, batch_first=True, padding_value=self._EOS)
 
 
 if __name__ == "__main__":
@@ -273,41 +418,35 @@ if __name__ == "__main__":
         print(f"Test: {desc}")
         lines()
 
-        try:
-            model = SeqToSeqCoder(
-                vocab_size4input=5000,
-                vocab_size4output=6000,
-                embedding_dim=128,
-                hidden_size=256,
-                num_layers=2,
-                bid=bid,
-                net_category=rnn_type
-            )
+        model = SeqToSeqCoder(
+            vocab_size4input=5000,
+            vocab_size4output=6000,
+            embedding_dim=128,
+            hidden_size=256,
+            num_layers=2,
+            bid=bid,
+            net_category=rnn_type
+        )
 
-            src = randint(3, 5000, (3, 8))
-            tgt = cat([
-                full((3, 1), 1),
-                randint(3, 6000, (3, 7)),
-                full((3, 1), 2)
-            ], dim=1)
+        src = randint(3, 5000, (3, 8))
+        tgt = cat([
+            full((3, 1), 1),
+            randint(3, 6000, (3, 7)),
+            full((3, 1), 2)
+        ], dim=1)
 
-            # 前向传播
-            logits = model(src, tgt)
-            assert logits.shape == (3, 8, 6000), f"Logits Error Size: {logits.shape}"
+        # Forward pass test
+        logits = model(src, tgt)
+        assert logits.shape == (3, 8, 6000), f"Logits Error Size: {logits.shape}"
 
-            # 生成测试
-            generated = model.generate(src, max_len=10)
-            assert generated.shape[0] == 3, f"Generation Batch Error: {generated.shape}"
-            assert generated.shape[1] <= 10, f"Generation Length Error: {generated.shape}"
+        # Generation test
+        # generated = model.generate(src, max_len=10, strategy="greedy")
+        generated = model.generate(src, max_len=10, strategy="beam", beam_width=3)
+        assert generated.shape[0] == 3, f"Generation Batch Error: {generated.shape}"
+        assert generated.shape[1] <= 10, f"Generation Length Error: {generated.shape}"
 
-            print(f"Successfully!")
-            print(f"- Logits Shape: {logits.shape}")
-            print(f"- Generation Shape: {generated.shape}")
-            starts()
-            print()
-
-        except Exception as e:
-            print(f"Failed: {e}")
-            import traceback
-
-            traceback.print_exc()
+        print(f"Successfully!")
+        print(f"- Logits Shape: {logits.shape}")
+        print(f"- Generation Shape: {generated.shape}")
+        starts()
+        print()
