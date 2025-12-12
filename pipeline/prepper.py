@@ -35,11 +35,11 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
     # Set dataset
     dataset4train = TorchDataset(features4train, labels4train, use_batch_pad=True)
     dataset4valid = TorchDataset(features4valid, labels4valid, use_batch_pad=True)
-    idx4train: int = randint(0, len(dataset4train) - 1)
-    print(dataset4train[idx4train])
-    idx4valid: int = randint(0, len(dataset4valid) - 1)
-    print(dataset4valid[idx4valid])
-    print()
+    # idx4train: int = randint(0, len(dataset4train) - 1)
+    # print(dataset4train[idx4train])
+    # idx4valid: int = randint(0, len(dataset4valid) - 1)
+    # print(dataset4valid[idx4valid])
+    # print()
 
     # Set up dataloader
     dataloader4train = TorchDataLoader(
@@ -49,6 +49,7 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
         use_batch_pad=True,
         FEATURES_PAD_VALUE=dictionary_cn[Tokens.PAD],
+        LABELS_PAD_VALUE=dictionary_cn[Tokens.PAD],
     )
     dataloader4valid = TorchDataLoader(
         dataset4valid,
@@ -57,15 +58,15 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
         workers=CONFIG4DL.PREPROCESSOR.WORKERS,
         use_batch_pad=True,
         FEATURES_PAD_VALUE=dictionary_cn[Tokens.PAD],
+        LABELS_PAD_VALUE=dictionary_cn[Tokens.PAD],
     )
-
-    for feature, label in tqdm(
-            dataloader4train._loader,
-            total=len(dataloader4train),
-            desc="Sample a batch from training data"
-    ):
-        print(feature, label)
-        break
+    # for feature, label in tqdm(
+    #         dataloader4train._loader,
+    #         total=len(dataloader4train),
+    #         desc="Sample a batch from training data"
+    # ):
+    #     print(feature, label)
+    #     break
 
     return dataloader4train, dataloader4valid
 
