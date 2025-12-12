@@ -47,7 +47,9 @@ from .calc4classification import calculator_for_classification
 from .calc4cm import calculator_for_confusion_metrics
 from .calc4iou import calc_binary_sem_seg_iou
 from .calc4regression import calculator_for_regression
+from .calc4seq_text_quilty import TextQualityScorer
 from .trainer4sem_seg import TorchTrainer4UNetSemSeg
+from .trainer4seq2seq import TorchTrainer4SeqToSeq
 from .trainer4torch import TorchTrainer
 
 __all__ = [
@@ -55,6 +57,8 @@ __all__ = [
     "calculator_for_confusion_metrics",
     "calc_binary_sem_seg_iou",
     "calculator_for_regression",
+    "TextQualityScorer",
     "TorchTrainer4UNetSemSeg",
+    "TorchTrainer4SeqToSeq",
     "TorchTrainer"
 ]
