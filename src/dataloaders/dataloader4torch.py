@@ -21,7 +21,7 @@ class TorchDataLoader:
                  dataset: Dataset,
                  batch_size: int = 32, shuffle_state: bool = True,
                  workers: int = 0,
-                 use_batch_pad: bool = False, FEATURES_PAD_VALUE: int = 0, LABELS_PAD_VALUE: int = -100,
+                 use_batch_pad: bool = False, FEATURES_PAD_VALUE: int = 0, LABELS_PAD_VALUE: int = 0,
                  batch_first: bool = True, padding_direction: str = "right"
                  ):
         """ Initialise the TorchDataLoader class
@@ -136,19 +136,19 @@ if __name__ == "__main__":
     ----------------------------------------------------------------
     Batch 1:
     Features shape: torch.Size([2, 3])
-    Labels shape: torch.Size([2, 6])
-    Features (padded): tensor([[ 1.,  2.,  3.],
-            [ 9., 10.,  0.]])
-    Labels (padded): tensor([[   2.,   11.,   12.,   13.,    3., -100.],
-            [   2.,   22.,   19.,   20.,   21.,    3.]])
+    Labels shape: torch.Size([2, 5])
+    Features (padded): tensor([[8, 0, 0],
+            [1, 2, 3]])
+    Labels (padded): tensor([[ 2, 23,  3,  0,  0],
+            [ 2, 11, 12, 13,  3]])
     ----------------------------------------------------------------
     Batch 2:
     Features shape: torch.Size([2, 4])
     Labels shape: torch.Size([2, 7])
-    Features (padded): tensor([[4., 5., 6., 7.],
-            [8., 0., 0., 0.]])
-    Labels (padded): tensor([[   2.,   14.,   15.,   16.,   17.,   18.,    3.],
-            [   2.,   23.,    3., -100., -100., -100., -100.]])
+    Features (padded): tensor([[ 9, 10,  0,  0],
+            [ 4,  5,  6,  7]])
+    Labels (padded): tensor([[ 2, 22, 19, 20, 21,  3,  0],
+            [ 2, 14, 15, 16, 17, 18,  3]])
     ----------------------------------------------------------------
     Done!
     ****************************************************************
