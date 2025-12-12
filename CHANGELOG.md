@@ -5,6 +5,9 @@
 
 ### Features
 
+- update trainer to use SeqToSeqCoder and support bilingual dictionaries ([24bfd22](https://github.com///commit/24bfd2207a652aef75cfb8d819ec2b6f567ec275))
+- add Lang enumeration for language support in cfg_types.py ([cb8b412](https://github.com///commit/cb8b412bfc06c7b23658cc626d74076f2ce83419))
+- add padding configuration for features and labels in batch ([a2699de](https://github.com///commit/a2699de2bb04788da744f6272e0f4eed7b883c0c))
 - add GRU-based sequence-to-sequence model implementation ([afd0680](https://github.com///commit/afd06804c6558552a870c6810f62823a4adc3857))
 - refactor SpaCy tokenization to use context manager and support batch processing ([597e954](https://github.com///commit/597e954c5b6f017e98db1c1514e3f5eceb9fa761))
 - update preprocess_data function for bilingual data processing and storage ([ae1e17d](https://github.com///commit/ae1e17d86c6c799c7e9168cf43142e1dd1bdcee0))
@@ -93,6 +96,7 @@
 
 ### Chore
 
+- update CHANGELOG.md with recent feature additions and code refactoring ([39c3a32](https://github.com///commit/39c3a327e31191340b92bb898fba56c422090ae2))
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
 
 ### Docs
@@ -103,6 +107,9 @@
 
 ### Code Refactoring
 
+- rename GRUSeq classes to Seq and add model summary method ([46c8adc](https://github.com///commit/46c8adc55d577afd07cb61f17bc7c6aab53fd485))
+- simplify batch sampling code in prepper.py ([8a0accc](https://github.com///commit/8a0acccdfb6f57447d35921d8066ba74a81c5651))
+- rename GRUSeqToSeqCoder to SeqToSeqCoder in __init__.py ([95925e9](https://github.com///commit/95925e9920272996d1bc9a4a9b11112d2d9ece1a))
 - rename seq_next_step.py to TS4next_step.py and update class name to TimeSeriesTorchDatasetForPredNextStep ([0619dc6](https://github.com///commit/0619dc64ca351a29187b67fd0c8bf37320afb55a))
 - rename seq_classification.py to TS4classification.py and update class name to TimeSeriesTorchDatasetForClassification ([b542194](https://github.com///commit/b542194fd07bdf8c7e096d9079aed4fcebd172ef))
 - update trainer to use GRUClassifier from gru4classification ([bac6ec4](https://github.com///commit/bac6ec426c0742cd24310bc94679b020d8540e77))
