@@ -5,6 +5,20 @@
 
 ### Features
 
+- add padding token index and decoding strategy parameters to trainer ([c9be048](https://github.com///commit/c9be048190bfbee5ac92f1055b184db88521db17))
+- integrate Seq2SeqStrategies and beam search parameters into trainer ([07d9115](https://github.com///commit/07d91151ab0086da4d8c02f383a31db43aeb983b))
+- add training log for GRU model with detailed metrics ([d72c373](https://github.com///commit/d72c373a2859550f0f2e6e1d12913b8af115aaba))
+- add Seq2SeqStrategies enum for sequence-to-sequence training strategies ([d44948e](https://github.com///commit/d44948e371e0c6210df2bca43f0fb2444d8a0aac))
+- add BEAM_SIZE parameter to RNNParams for beam search configuration ([2d3bdb1](https://github.com///commit/2d3bdb14e58e87c1c38d98c3c07e052ddf498cb0))
+- add Seq2SeqNet and Seq2SeqStrategies to module exports ([e58d9a1](https://github.com///commit/e58d9a12030710cd843343beb68401bf10009531))
+- add lightning-utilities and torchmetrics packages to dependencies ([9c9ad7a](https://github.com///commit/9c9ad7af3b42de504125eb725b5d6ba489f272f5))
+- add TorchTrainer4SeqToSeq class for seq2seq training and validation ([643c265](https://github.com///commit/643c2650e5bac4f90bf854645c5c32cc4172b9ac))
+- update trainer to use Seq2Seq model and adjust training parameters for translation task ([5556c04](https://github.com///commit/5556c0447846015cfb23250c315b3e3749476935))
+- enhance generation methods with greedy and beam search strategies ([967ae90](https://github.com///commit/967ae90044a3ed48bed03018f46ed65f051455c0))
+- add requirements.txt for managing project dependencies ([77bb325](https://github.com///commit/77bb3252ed5693a429d03e66c8bca4e5a0c0ff71))
+- add torchmetrics dependency for enhanced metric calculations ([8d1a937](https://github.com///commit/8d1a937ce40ffeb15db01e979d34b8fc37ba3764))
+- add TextQualityScorer class for calculating BLEU and ROUGE scores ([16326a5](https://github.com///commit/16326a526c00c0c7926df0c69383e196b93fe7af))
+- add TextQualityScorer and TorchTrainer4SeqToSeq to module exports ([3abc1ad](https://github.com///commit/3abc1adc2a7a72bbb7e3d0b22bbb3c15f924507c))
 - update trainer to use SeqToSeqCoder and support bilingual dictionaries ([24bfd22](https://github.com///commit/24bfd2207a652aef75cfb8d819ec2b6f567ec275))
 - add Lang enumeration for language support in cfg_types.py ([cb8b412](https://github.com///commit/cb8b412bfc06c7b23658cc626d74076f2ce83419))
 - add padding configuration for features and labels in batch ([a2699de](https://github.com///commit/a2699de2bb04788da744f6272e0f4eed7b883c0c))
@@ -89,6 +103,9 @@
 
 ### Bug Fixes
 
+- comment out debug print statements and ensure LABELS_PAD_VALUE is set for dataloaders ([bcdce03](https://github.com///commit/bcdce03cb73b66912bba0a1c9ca439c1e4f37979))
+- change tensor data type from float32 to long in _to_list_var_len_tensor method ([2d5d3c0](https://github.com///commit/2d5d3c00cd31b0bd3c5a5abce04b5a178233bb2b))
+- update LABELS_PAD_VALUE to 0 for consistent padding in data loader ([f086d54](https://github.com///commit/f086d545dc0e26fdabd0969819ab9a23b91e116c))
 - correct shebang formatting in main.py ([2552f11](https://github.com///commit/2552f1136de5ac86dca232ed74f38841e425ee6f))
 - add uv.lock ([8f28913](https://github.com///commit/8f289132b7fa66bd42e01c35e1924c8a532f46c8))
 - update type hint for cols parameter in SQLiteIII constructor ([634ecc6](https://github.com///commit/634ecc638a573f21da49194df63fa74a19957324))
@@ -96,7 +113,7 @@
 
 ### Chore
 
-- update CHANGELOG.md with recent feature additions and code refactoring ([39c3a32](https://github.com///commit/39c3a327e31191340b92bb898fba56c422090ae2))
+- update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
 
 ### Docs
@@ -107,6 +124,7 @@
 
 ### Code Refactoring
 
+- remove unused import of ndarray from numpy ([b92228b](https://github.com///commit/b92228b14f8084e822eca424b9adbe3c306ce1c1))
 - rename GRUSeq classes to Seq and add model summary method ([46c8adc](https://github.com///commit/46c8adc55d577afd07cb61f17bc7c6aab53fd485))
 - simplify batch sampling code in prepper.py ([8a0accc](https://github.com///commit/8a0acccdfb6f57447d35921d8066ba74a81c5651))
 - rename GRUSeqToSeqCoder to SeqToSeqCoder in __init__.py ([95925e9](https://github.com///commit/95925e9920272996d1bc9a4a9b11112d2d9ece1a))
