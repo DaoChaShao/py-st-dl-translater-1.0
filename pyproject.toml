@@ -23,6 +23,7 @@ dependencies = [
     "tensorboard>=2.20.0",
     "thulac>=0.2.2",
     "torch>=2.9.1",
+    "torchmetrics>=1.8.2",
     "torchsummary>=1.5.1",
     "tqdm>=4.67.1",
     "watchdog>=6.0.0",
