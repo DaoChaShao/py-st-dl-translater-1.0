@@ -35,6 +35,12 @@ class Seq2SeqNet(StrEnum):
 
 
 @unique
+class Seq2SeqStrategies(StrEnum):
+    GREEDY = "greedy"
+    BEAM_SEARCH = "beam"
+
+
+@unique
 class Tokens(StrEnum):
     PAD = "<PAD>"
     UNK = "<UNK>"
