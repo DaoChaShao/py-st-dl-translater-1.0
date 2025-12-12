@@ -10,7 +10,7 @@ from pathlib import Path
 from torch import optim, nn
 
 from src.configs.cfg_rnn import CONFIG4RNN
-from src.configs.cfg_types import Tokens, Seq2SeqNet
+from src.configs.cfg_types import Tokens, Seq2SeqNet, Seq2SeqStrategies
 from src.configs.parser import set_argument_parser
 from src.trainers.trainer4seq2seq import TorchTrainer4SeqToSeq
 from src.nets.seq2seq import SeqToSeqCoder
@@ -83,8 +83,11 @@ def main() -> None:
             optimiser=optimizer,
             criterion=criterion,
             scheduler=scheduler,
+            PAD=dictionary_en[Tokens.PAD],
             SOS=dictionary_en[Tokens.SOS],
             EOS=dictionary_en[Tokens.EOS],
+            decode_strategy=Seq2SeqStrategies.BEAM_SEARCH,
+            beam_width=CONFIG4RNN.PARAMETERS.BEAM_SIZE,
             accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
         )
         # Train the model
@@ -93,7 +96,7 @@ def main() -> None:
             valid_loader=valid,
             epochs=args.epochs,
             model_save_path=str(CONFIG4RNN.FILEPATHS.SAVED_NET),
-            log_name=Seq2SeqNet.GRU
+            log_name=f"{Seq2SeqNet.GRU}-{Seq2SeqStrategies.BEAM_SEARCH}"
         )
 
 
