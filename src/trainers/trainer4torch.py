@@ -9,7 +9,6 @@
 from PySide6.QtCore import QObject, Signal
 from datetime import datetime
 from json import dumps
-from numpy import ndarray
 from torch import nn, optim, no_grad, save, device
 
 from src.dataloaders import TorchDataLoader
