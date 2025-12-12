@@ -31,7 +31,7 @@ __author__ = "Shawn Yu"
 __version__ = "0.2.0"
 
 from .gru4classification import GRUClassifier
-from .seq2seq import GRUSeqToSeqCoder
+from .seq2seq import SeqToSeqCoder
 from .lstm4classification import LSTMClassifier
 from .rnn4classification import RNNClassifier
 from .unet4layers4sem import Standard4LayersUNetClassification
@@ -39,7 +39,7 @@ from .unet5layers4sem import Standard5LayersUNetForClassification
 
 __all__ = [
     "GRUClassifier",
-    "GRUSeqToSeqCoder",
+    "SeqToSeqCoder",
     "LSTMClassifier",
     "RNNClassifier",
     "Standard4LayersUNetClassification",
