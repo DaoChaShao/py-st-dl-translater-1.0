@@ -9,7 +9,7 @@
 from numpy import ndarray
 from pandas import DataFrame, Series
 from random import choice
-from torch import Tensor, tensor, float32
+from torch import Tensor, tensor, float32, long
 from torch.utils.data import Dataset
 
 
@@ -62,13 +62,13 @@ class TorchDataset(Dataset):
     @staticmethod
     def _to_list_var_len_tensor(data: DataFrame | Tensor | ndarray | list) -> list[Tensor]:
         if isinstance(data, list):
-            return [tensor(item, dtype=float32) for item in data]
+            return [tensor(item, dtype=long) for item in data]
         elif isinstance(data, (DataFrame, ndarray)):
             if isinstance(data, DataFrame):
                 data = data.values
-            return [tensor(row, dtype=float32) for row in data]
+            return [tensor(row, dtype=long) for row in data]
         elif isinstance(data, Tensor):
-            return [data[i] for i in range(len(data))]
+            return [data[i].long() for i in range(len(data))]
         else:
             raise TypeError(f"Unsupported data type: {type(data)}")
 
