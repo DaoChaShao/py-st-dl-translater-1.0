@@ -14,6 +14,7 @@ from src.configs.cfg_dl import DataPreprocessor, Hyperparameters
 
 @dataclass
 class RNNParams:
+    BEAM_SIZE: int = 5
     CLASSES: int = 3  # Binary classification is 2
     EMBEDDING_DIM: int = 128
     HIDDEN_SIZE: int = 256
