@@ -7,14 +7,13 @@
 # @Desc     :   
 
 from pathlib import Path
-from torch import optim, nn, Tensor
+from torch import optim, nn
 
 from src.configs.cfg_rnn import CONFIG4RNN
 from src.configs.cfg_types import Tokens, Seq2SeqNet
 from src.configs.parser import set_argument_parser
-from src.trainers.trainer4torch import TorchTrainer
+from src.trainers.trainer4seq2seq import TorchTrainer4SeqToSeq
 from src.nets.seq2seq import SeqToSeqCoder
-from src.utils.PT import item2tensor
 from src.utils.stats import load_json
 from src.utils.PT import TorchRandomSeed
 
@@ -26,7 +25,7 @@ def main() -> None:
     # Set up argument parser
     args = set_argument_parser()
 
-    with TorchRandomSeed("Financial News Classification"):
+    with TorchRandomSeed("Chinese to English (Seq2Seq) Translation"):
         # Get the dictionary
         dic_cn: Path = Path(CONFIG4RNN.FILEPATHS.DICTIONARY_CN)
         dictionary_cn = load_json(dic_cn) if dic_cn.exists() else print("Dictionary file not found.")
@@ -59,29 +58,34 @@ def main() -> None:
         # Setup optimizer and loss function
         optimizer = optim.AdamW(model.parameters(), lr=args.alpha, weight_decay=CONFIG4RNN.HYPERPARAMETERS.DECAY)
         scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", factor=0.5, patience=2)
-        criterion = nn.CrossEntropyLoss(ignore_index=CONFIG4RNN.PARAMETERS.PAD_LABELS_IN_BATCH)
+        criterion = nn.CrossEntropyLoss(ignore_index=dictionary_en[Tokens.PAD])
         model.summary()
         """
-        ================================================================
-        Model Summary for LSTMRNNForClassification
+        ****************************************************************
+        Model: SeqToSeqCoder
         ----------------------------------------------------------------
-        - Vocabulary size: 9570
-        - Embedding dim: 128
-        - Hidden size: 256
-        - Num layers: 2
-        - Output classes: 3
-        - Total parameters: 3,593,987
-        - Trainable parameters: 3,593,987
-        ================================================================
+        Encoder Vocab Size: 5235
+        Decoder Vocab Size: 3189
+        Embedding Dim: 128
+        Hidden Size: 256
+        Num Layers: 2
+        Bidirectional Encoder: True
+        RNN Type: gru
+        Total Parameters: 4,364,661
+        Trainable Parameters: 4,364,661
+        ****************************************************************
         """
 
         # Setup trainer
-        trainer = TorchTrainer(
+        trainer = TorchTrainer4SeqToSeq(
+            vocab_size4output=vocab_size4en,
             model=model,
             optimiser=optimizer,
             criterion=criterion,
-            accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
             scheduler=scheduler,
+            SOS=dictionary_en[Tokens.SOS],
+            EOS=dictionary_en[Tokens.EOS],
+            accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
         )
         # Train the model
         trainer.fit(
