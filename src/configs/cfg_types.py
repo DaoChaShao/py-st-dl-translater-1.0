@@ -14,6 +14,12 @@ from src.utils.stats import load_json
 
 
 @unique
+class Lang(StrEnum):
+    CN = "cn"
+    EN = "en"
+
+
+@unique
 class SeqTask(StrEnum):
     SEQ2ONE = "seq2one"
     SEQ2SEQ = "seq2seq"
@@ -21,9 +27,11 @@ class SeqTask(StrEnum):
 
 
 @unique
-class Lang(StrEnum):
-    CN = "cn"
-    EN = "en"
+class Seq2SeqNet(StrEnum):
+    RNN = "rnn"
+    LSTM = "lstm"
+    GRU = "gru"
+    TRANSFORMER = "transformer"
 
 
 @unique
