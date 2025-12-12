@@ -12,8 +12,10 @@ from torch import (nn, Tensor,
 
 from src.utils.highlighter import starts, lines
 
+WIDTH: int = 64
 
-class GRUSeqEncoder(nn.Module):
+
+class SeqEncoder(nn.Module):
     def __init__(self,
                  vocab_size: int,
                  embedding_dim: int, hidden_size: int, num_layers: int,
@@ -61,7 +63,7 @@ class GRUSeqEncoder(nn.Module):
             return outputs, hidden, lengths
 
 
-class GRUSeqDecoder(nn.Module):
+class SeqDecoder(nn.Module):
     def __init__(self,
                  vocab_size: int, embedding_dim: int, hidden_size: int, num_layers: int,
                  dropout_rate: float = 0.3, pad_idx: int = 0,
@@ -107,7 +109,7 @@ class GRUSeqDecoder(nn.Module):
             return logits, (hn,)
 
 
-class GRUSeqToSeqCoder(nn.Module):
+class SeqToSeqCoder(nn.Module):
     """ An RNN model for sequence-to-sequence tasks using PyTorch """
 
     def __init__(self,
@@ -139,12 +141,12 @@ class GRUSeqToSeqCoder(nn.Module):
         self._bid = bid  # Bidirectional flag for encoder
         self._type = net_category  # Network category
 
-        self._encoder = GRUSeqEncoder(
+        self._encoder = SeqEncoder(
             self._L4IN, self._H, self._M, self._C,
             dropout_rate=dropout_rate if num_layers > 1 else 0.0,
             bid=self._bid, pad_idx=pad_idx4input, net_category=net_category,
         )
-        self._decoder = GRUSeqDecoder(
+        self._decoder = SeqDecoder(
             self._L4OUT, self._H, self._M, self._C,
             dropout_rate=dropout_rate if num_layers > 1 else 0.0,
             pad_idx=pad_idx4output, net_category=net_category,
@@ -193,6 +195,25 @@ class GRUSeqToSeqCoder(nn.Module):
         logits, _ = self._decoder(decoder_input, decoder_state)
 
         return logits
+
+    def summary(self):
+        """ Print a summary of the model architecture and parameters """
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+
+        print("*" * WIDTH)
+        print(f"Model: {self.__class__.__name__}")
+        print("-" * WIDTH)
+        print(f"Encoder Vocab Size: {self._L4IN}")
+        print(f"Decoder Vocab Size: {self._L4OUT}")
+        print(f"Embedding Dim: {self._H}")
+        print(f"Hidden Size: {self._M}")
+        print(f"Num Layers: {self._C}")
+        print(f"Bidirectional Encoder: {self._bid}")
+        print(f"RNN Type: {self._type}")
+        print(f"Total Parameters: {total_params:,}")
+        print(f"Trainable Parameters: {trainable_params:,}")
+        print("*" * WIDTH)
 
     def generate(self, src: Tensor, max_len: int = 50):
         """ Regression generate automatically """
@@ -253,7 +274,7 @@ if __name__ == "__main__":
         lines()
 
         try:
-            model = GRUSeqToSeqCoder(
+            model = SeqToSeqCoder(
                 vocab_size4input=5000,
                 vocab_size4output=6000,
                 embedding_dim=128,
