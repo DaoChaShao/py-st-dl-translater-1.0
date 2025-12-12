@@ -26,7 +26,8 @@ class TorchTrainer4SeqToSeq(QObject):
     def __init__(self,
                  vocab_size4output: int,
                  model: nn.Module, optimiser, criterion, scheduler=None,
-                 SOS: int = 2, EOS: int = 3,
+                 PAD: int = 0, SOS: int = 2, EOS: int = 3,
+                 decode_strategy: str = "greedy", beam_width: int = 5,
                  accelerator: str = "auto",
                  ) -> None:
         super().__init__()
@@ -36,13 +37,19 @@ class TorchTrainer4SeqToSeq(QObject):
         :param optimiser: the optimiser for training
         :param criterion: the loss function
         :param scheduler: learning rate scheduler (optional)
+        :param PAD: padding token index
         :param SOS: start-of-sequence token index
         :param EOS: end-of-sequence token index
+        :param decode_strategy: decoding strategy for generation ("greedy", "beam_search", etc.)
+        :param beam_width: beam width for beam search decoding
         :param accelerator: device to use for training ("cpu", "cuda", "auto", etc.)
         """
         self._vocab_size = vocab_size4output
+        self._PAD = PAD
         self._SOS = SOS
         self._EOS = EOS
+        self._S = decode_strategy
+        self._beam_size = beam_width
 
         self._accelerator = get_device(accelerator)
         self._model = model.to(device(self._accelerator))
@@ -116,7 +123,10 @@ class TorchTrainer4SeqToSeq(QObject):
                 _total += src.size(0)
 
                 # Collect predictions and references for evaluation
-                generated = self._model.generate(src, max_len=50)
+                src_lengths = (src != self._PAD).sum(dim=1)
+                dynamic_lens = (src_lengths.float() * 1.5).long().clamp(min=10, max=100)
+                MAX_LEN = dynamic_lens.max().item()
+                generated = self._model.generate(src, max_len=MAX_LEN, strategy=self._S, beam_width=self._beam_size)
                 for i in range(len(generated)):
                     _pred = generated[i].cpu().tolist()
                     _ref = tgt[i, 1:].cpu().tolist()
@@ -171,6 +181,7 @@ class TorchTrainer4SeqToSeq(QObject):
             logger.info(dumps({
                 "epochs": epochs,
                 "epoch": epoch + 1,
+                "decode_strategy": self._S,
                 "alpha": self._optimiser.param_groups[0]["lr"],
                 "train_loss": round(float(train_loss), 4),
                 "valid_loss": round(float(valid_loss), 4),
