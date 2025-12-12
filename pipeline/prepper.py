@@ -59,19 +59,13 @@ def prepare_data() -> tuple[TorchDataLoader, TorchDataLoader]:
         FEATURES_PAD_VALUE=dictionary_cn[Tokens.PAD],
     )
 
-    # for feature, label in tqdm(
-    #         dataloader4train._loader,
-    #         total=len(dataloader4train),
-    #         desc="Sample a batch from training data"
-    # ):
-    #     print(feature, label)
-    #     break
-    #
-    # idx4train: int = randint(0, len(dataloader4train) - 1)
-    # print(dataloader4train[idx4train])
-    # idx4valid: int = randint(0, len(dataloader4valid) - 1)
-    # print(dataloader4valid[idx4valid])
-    # print()
+    for feature, label in tqdm(
+            dataloader4train._loader,
+            total=len(dataloader4train),
+            desc="Sample a batch from training data"
+    ):
+        print(feature, label)
+        break
 
     return dataloader4train, dataloader4valid
 
