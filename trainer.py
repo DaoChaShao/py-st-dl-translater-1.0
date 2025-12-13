@@ -86,7 +86,7 @@ def main() -> None:
             PAD=dictionary_en[Tokens.PAD],
             SOS=dictionary_en[Tokens.SOS],
             EOS=dictionary_en[Tokens.EOS],
-            decode_strategy=Seq2SeqStrategies.BEAM_SEARCH,
+            decode_strategy=Seq2SeqStrategies.GREEDY,
             beam_width=CONFIG4RNN.PARAMETERS.BEAM_SIZE,
             accelerator=CONFIG4RNN.HYPERPARAMETERS.ACCELERATOR,
         )
@@ -96,7 +96,7 @@ def main() -> None:
             valid_loader=valid,
             epochs=args.epochs,
             model_save_path=str(CONFIG4RNN.FILEPATHS.SAVED_NET),
-            log_name=f"{Seq2SeqNet.GRU}-{Seq2SeqStrategies.BEAM_SEARCH}"
+            log_name=f"{Seq2SeqNet.GRU}-{Seq2SeqStrategies.GREEDY}"
         )
 
 
