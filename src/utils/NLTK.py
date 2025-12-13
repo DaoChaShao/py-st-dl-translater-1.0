@@ -7,6 +7,7 @@
 # @Desc     :   
 
 from nltk.tokenize import TreebankWordTokenizer, TreebankWordDetokenizer
+from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu, corpus_bleu
 
 
 class NLTKTokenizer:
@@ -39,6 +40,20 @@ class NLTKTokenizer:
     def detokenize(self, tokens: list[str]) -> str:
         """ Detokenize the input tokens """
         return self._tokenizer.detokenize(tokens)
+
+
+def bleu_score(reference: list[str], candidate: list[str], smooth: bool = True) -> float:
+    """ Calculate BLEU score for a single candidate against a reference
+    :param reference: reference text
+    :param candidate: candidate text
+    :param smooth: whether to apply smoothing
+    :return: BLEU score
+    """
+    if smooth:
+        smoothie = SmoothingFunction().method4
+        return sentence_bleu([reference], candidate, smoothing_function=smoothie)
+    else:
+        return sentence_bleu([reference], candidate)
 
 
 if __name__ == "__main__":
