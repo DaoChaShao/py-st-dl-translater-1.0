@@ -60,8 +60,8 @@ def process_data() -> tuple[list, list, list, list]:
                 train_cn_items: list[list[str]] = tokeniser.batch_tokenise(cn4train)
                 valid_cn_items: list[list[str]] = tokeniser.batch_tokenise(cn4valid)
             with SpaCyBatchTokeniser(Lang.EN, batches=batches, strict=False) as tokeniser:
-                train_en_items = tokeniser.batch_tokenise(en4train)
-                valid_en_items = tokeniser.batch_tokenise(en4valid)
+                train_en_items: list[list[str]] = tokeniser.batch_tokenise(en4train)
+                valid_en_items: list[list[str]] = tokeniser.batch_tokenise(en4valid)
         else:
             with SpaCyBatchTokeniser(Lang.CN, batches=batches, strict=False) as tokeniser:
                 train_cn_items: list[list[str]] = tokeniser.batch_tokenise(cn4train[:amount])
