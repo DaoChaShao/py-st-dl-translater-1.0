@@ -277,7 +277,7 @@ def check_vocab_coverage(words: list[str], dictionary: dict[str, int]) -> float:
 
 
 if __name__ == "__main__":
-    text_en = "Hello, world! This is a test."
+    text_en = "Don't you miss anything?"
     text_cn = "我爱北京天安门。"
 
     with SpaCyBatchTokeniser(lang="en", strict=False) as tokenizer:
