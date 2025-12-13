@@ -1,10 +1,13 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-13)
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-14)
 
 ### Features
 
+- add BLEU score calculation function with optional smoothing ([92c2879](https://github.com///commit/92c287993fc454706df5e768c88efc92b889b51a))
+- update example text in main execution for NLP demonstration ([b52edb7](https://github.com///commit/b52edb743ef156ea6394786359fa780d5548ebca))
+- implement database connection and enhance model evaluation with BLEU scoring ([12d7e37](https://github.com///commit/12d7e3787fd5e0af055f27545f76be88dd466f3d))
 - change decoding strategy to greedy for GRU model training ([4542d94](https://github.com///commit/4542d94953c7186d21ef30283f34de182e234c7f))
 - add training log for GRU model with greedy decoding strategy ([13f7cd1](https://github.com///commit/13f7cd162fdc17f89c492175945ab08e3e122735))
 - add training log for GRU model with beam decoding strategy ([c640502](https://github.com///commit/c640502d5feb0fb88f2883df9405aea38966b11e))
@@ -109,6 +112,7 @@
 
 ### Bug Fixes
 
+- add type annotations for training and validation English items in processor.py ([a4bbc1f](https://github.com///commit/a4bbc1fe6ee3459512f3af07514afd80fdb32531))
 - comment out debug print statements and ensure LABELS_PAD_VALUE is set for dataloaders ([bcdce03](https://github.com///commit/bcdce03cb73b66912bba0a1c9ca439c1e4f37979))
 - change tensor data type from float32 to long in _to_list_var_len_tensor method ([2d5d3c0](https://github.com///commit/2d5d3c00cd31b0bd3c5a5abce04b5a178233bb2b))
 - update LABELS_PAD_VALUE to 0 for consistent padding in data loader ([f086d54](https://github.com///commit/f086d545dc0e26fdabd0969819ab9a23b91e116c))
@@ -119,6 +123,7 @@
 
 ### Chore
 
+- update CHANGELOG.md with recent feature additions ([5437223](https://github.com///commit/5437223d3f2fcefadc8255e4867401e2863a424a))
 - update CHANGELOG.md with recent feature additions and bug fixes ([3f755c2](https://github.com///commit/3f755c22b801609daedfcb9aa04e3094d84f74aa))
 - update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
