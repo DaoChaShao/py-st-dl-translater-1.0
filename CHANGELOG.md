@@ -1,10 +1,16 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-12)
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-13)
 
 ### Features
 
+- change decoding strategy to greedy for GRU model training ([4542d94](https://github.com///commit/4542d94953c7186d21ef30283f34de182e234c7f))
+- add training log for GRU model with greedy decoding strategy ([13f7cd1](https://github.com///commit/13f7cd162fdc17f89c492175945ab08e3e122735))
+- add training log for GRU model with beam decoding strategy ([c640502](https://github.com///commit/c640502d5feb0fb88f2883df9405aea38966b11e))
+- add model-gru-greedy.pth ([99a36b6](https://github.com///commit/99a36b612843c3e21c02533999cf9a5265aeb1a7))
+- add model-gru-beam.pth ([99c6e0e](https://github.com///commit/99c6e0e54c3a756a2726ba0cb420b17b1f650aa8))
+- add paths for trained GRU models with beam and greedy strategies ([98ad054](https://github.com///commit/98ad054d1fec7f223cc9ec6373bb2e677df41ef6))
 - add padding token index and decoding strategy parameters to trainer ([c9be048](https://github.com///commit/c9be048190bfbee5ac92f1055b184db88521db17))
 - integrate Seq2SeqStrategies and beam search parameters into trainer ([07d9115](https://github.com///commit/07d91151ab0086da4d8c02f383a31db43aeb983b))
 - add training log for GRU model with detailed metrics ([d72c373](https://github.com///commit/d72c373a2859550f0f2e6e1d12913b8af115aaba))
@@ -113,6 +119,7 @@
 
 ### Chore
 
+- update CHANGELOG.md with recent feature additions and bug fixes ([3f755c2](https://github.com///commit/3f755c22b801609daedfcb9aa04e3094d84f74aa))
 - update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
 
