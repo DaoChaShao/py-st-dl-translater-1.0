@@ -50,8 +50,20 @@ def bleu_score(reference: list[str], candidate: list[str], smooth: bool = True) 
     :return: BLEU score
     """
     if smooth:
-        smoothie = SmoothingFunction().method4
-        return sentence_bleu([reference], candidate, smoothing_function=smoothie)
+        chen_cherry = SmoothingFunction()
+        """
+        Smoothing method 1: Add epsilon counts to precision with 0 counts.
+        ---
+        平滑方法 1：将 ε 计数加到精度为 0。
+        ===
+        Smoothing method 4: Shorter translations may have inflated precision values due to having smaller denominators; 
+        therefore, we give them proportionally smaller smoothed counts. Instead of scaling to 1/(2^k), 
+        Chen and Cherry suggests dividing by 1/ln(len(T)), where T is the length of the translation.
+        ---
+        平滑方法 4：较短平移因分母较小可能具有膨胀精度值;因此，我们给它们按比例更小的平滑计数。
+        陈和樱桃建议不将缩放为 1/（2^k），而是除以 1/ln（len（T）），其中 T 为平移长度。
+        """
+        return sentence_bleu([reference], candidate, smoothing_function=chen_cherry.method4)
     else:
         return sentence_bleu([reference], candidate)
 
