@@ -40,7 +40,7 @@ models for translating Chinese to English by using [AI Challenger 2017](https://
 3. Run the application with the command `streamlit run main.py`.
 4. You can also try the application by visiting the following
    link:  
-   [![Static Badge](https://img.shields.io/badge/Open%20in%20Streamlit-Daochashao-red?style=for-the-badge&logo=streamlit&labelColor=white)](https://rnn-translater.streamlit.app/)
+   [![Static Badge](https://img.shields.io/badge/Open%20in%20Streamlit-Daochashao-red?style=for-the-badge&logo=streamlit&labelColor=white)](https://rnn-translater-1.streamlit.app/)
 
 **PRIVACY NOTICE**
 ---
