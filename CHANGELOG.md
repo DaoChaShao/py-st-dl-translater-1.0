@@ -133,6 +133,7 @@
 
 ### Chore
 
+- update CHANGELOG.md with recent feature enhancements ([2a66fa5](https://github.com///commit/2a66fa507fe558425a067d40c8daa6647d86c031))
 - update CHANGELOG.md with recent feature additions ([53f926d](https://github.com///commit/53f926decb68758864681b5c419eb23dcb8abc7d))
 - update CHANGELOG.md with recent feature additions and improvements ([07e76e2](https://github.com///commit/07e76e2452e9d20026f0181da27ead6fdac69e0c))
 - add .gitignore to exclude Python and IDE-specific files ([0831291](https://github.com///commit/0831291362cfd62f3c16b075f31a026ebb768902))
@@ -143,6 +144,7 @@
 
 ### Docs
 
+- update Streamlit link in Chinese README.md ([2c8e83f](https://github.com///commit/2c8e83f5290a080ade30541cc53b4aa3e244809d))
 - update Streamlit link in README.md ([a5f7273](https://github.com///commit/a5f727362a232b75b5d8e37d55b4927aee8f69be))
 - update CHANGELOG.md with recent feature additions and updates ([b3d6aad](https://github.com///commit/b3d6aade2a7ccfbb01628f2ceaff403315457d04))
 - add English dictionary file dictionary_en.json ([dc76f57](https://github.com///commit/dc76f5709792c8f551f8214c7eea9962ac0d8369))
