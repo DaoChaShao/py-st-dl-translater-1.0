@@ -5,6 +5,7 @@
 
 ### Features
 
+- enhance BLEU score calculation with detailed smoothing method documentation ([63f3a1e](https://github.com///commit/63f3a1eea5ea46cdec87ddafc3535328b67c67c7))
 - add prediction.py for machine translation model initialization and evaluation ([a286410](https://github.com///commit/a286410db003bc179c202bf33ffd16b0c38d0d46))
 - add progress bar selection for batch tokenization in nlp.py ([84a42f3](https://github.com///commit/84a42f31130442f97bcd8dd70048f8e45c05f971))
 - update main.py to configure page settings and initialize pages ([1fcd455](https://github.com///commit/1fcd4552a51bae7b5f0003c0ceb95c0e0f752825))
@@ -132,10 +133,10 @@
 
 ### Chore
 
+- update CHANGELOG.md with recent feature additions ([53f926d](https://github.com///commit/53f926decb68758864681b5c419eb23dcb8abc7d))
 - update CHANGELOG.md with recent feature additions and improvements ([07e76e2](https://github.com///commit/07e76e2452e9d20026f0181da27ead6fdac69e0c))
 - add .gitignore to exclude Python and IDE-specific files ([0831291](https://github.com///commit/0831291362cfd62f3c16b075f31a026ebb768902))
 - update CHANGELOG.md for version 0.1.0 release ([e1af8d5](https://github.com///commit/e1af8d5854e9fcc451a44f4f78612beb4887f69b))
-- update CHANGELOG.md with recent feature additions ([5437223](https://github.com///commit/5437223d3f2fcefadc8255e4867401e2863a424a))
 - update CHANGELOG.md with recent feature additions and bug fixes ([3f755c2](https://github.com///commit/3f755c22b801609daedfcb9aa04e3094d84f74aa))
 - update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
 - add .gitignore file to exclude Python and IDE-specific files ([0b0f1e2](https://github.com///commit/0b0f1e2e49ae2148f72d458bc9461c2e6a529121))
