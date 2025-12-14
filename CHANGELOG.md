@@ -5,6 +5,14 @@
 
 ### Features
 
+- add prediction.py for machine translation model initialization and evaluation ([a286410](https://github.com///commit/a286410db003bc179c202bf33ffd16b0c38d0d46))
+- add progress bar selection for batch tokenization in nlp.py ([84a42f3](https://github.com///commit/84a42f31130442f97bcd8dd70048f8e45c05f971))
+- update main.py to configure page settings and initialize pages ([1fcd455](https://github.com///commit/1fcd4552a51bae7b5f0003c0ceb95c0e0f752825))
+- add layout.py for configuring page settings and sidebar navigation ([b86e700](https://github.com///commit/b86e700e340d49b1a4e3c609213d40bdb22b91db))
+- add home.py for interactive machine translation evaluation system ([08682bf](https://github.com///commit/08682bf6176f558fcdad0cbfd7b7b6cb9416210c))
+- create __init__.py for Next Word Prediction application package ([f403eab](https://github.com///commit/f403eab48e1b14bab56afb24d3e75256dea603a4))
+- create __init__.py to support package initialization ([8f49b42](https://github.com///commit/8f49b42c9297531199b8df82fc71559d163e4e70))
+- add __init__.py for multi-page structure in Next Word Prediction app ([d0482ae](https://github.com///commit/d0482ae99c07643f432a9a839a4d56df304c0ad1))
 - implement database connection and enhance prediction with BLEU score evaluation ([d7b8254](https://github.com///commit/d7b8254ae0801e142537a76ce9dca2196d8100e5))
 - add BLEU score calculation function with optional smoothing ([92c2879](https://github.com///commit/92c287993fc454706df5e768c88efc92b889b51a))
 - update example text in main execution for NLP demonstration ([b52edb7](https://github.com///commit/b52edb743ef156ea6394786359fa780d5548ebca))
@@ -124,7 +132,8 @@
 
 ### Chore
 
-- update CHANGELOG.md for version 0.1.0 release ([c3dea3c](https://github.com///commit/c3dea3c8623074e433118585d8da8e66c5d10292))
+- add .gitignore to exclude Python and IDE-specific files ([0831291](https://github.com///commit/0831291362cfd62f3c16b075f31a026ebb768902))
+- update CHANGELOG.md for version 0.1.0 release ([e1af8d5](https://github.com///commit/e1af8d5854e9fcc451a44f4f78612beb4887f69b))
 - update CHANGELOG.md with recent feature additions ([5437223](https://github.com///commit/5437223d3f2fcefadc8255e4867401e2863a424a))
 - update CHANGELOG.md with recent feature additions and bug fixes ([3f755c2](https://github.com///commit/3f755c22b801609daedfcb9aa04e3094d84f74aa))
 - update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
