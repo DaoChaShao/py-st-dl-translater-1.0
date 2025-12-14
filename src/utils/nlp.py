@@ -11,6 +11,7 @@ from pathlib import Path
 from re import compile, sub
 from pandas import DataFrame
 from spacy import load
+from stqdm import stqdm
 from tqdm import tqdm
 
 from src.configs.cfg_base import CONFIG
@@ -112,6 +113,17 @@ def extract_cn_chars(filepath: str | Path, pattern: str = r"[^\u4e00-\u9fa5]") -
     return chars, lines
 
 
+def select_bar(streamlit_bar: bool = False):
+    """ Select progress bar based on environment
+    :param streamlit_bar: whether running in Streamlit environment
+    :return: appropriate progress bar function
+    """
+    if streamlit_bar:
+        return stqdm
+    else:
+        return tqdm
+
+
 class SpaCyBatchTokeniser:
     """ "" SpaCy NLP Processor for a batch of English texts or a single text """
 
@@ -149,16 +161,17 @@ class SpaCyBatchTokeniser:
 
         # print(f"SpaCy {self._lang} Model released.")
 
-    def batch_tokenise(self, contents: list[str]) -> list[list[str]]:
+    def batch_tokenise(self, contents: list[str], streamlit_bar: bool = False) -> list[list[str]]:
         """ Tokenise a batch of texts
         :param contents: list of text contents to process
+        :param streamlit_bar: whether to use Streamlit progress bar
         :return: list of tokenized texts
         """
         if self._nlp is None:
             raise RuntimeError("Model not loaded. Use within 'with' statement.")
 
         words: list[list[str]] = []
-        for doc in tqdm(
+        for doc in select_bar(streamlit_bar)(
                 self._nlp.pipe(contents, batch_size=self._batches),
                 total=len(contents),
                 desc=f"SpaCy {self._lang} Tokeniser"
