@@ -5,6 +5,7 @@
 
 ### Features
 
+- implement database connection and enhance prediction with BLEU score evaluation ([d7b8254](https://github.com///commit/d7b8254ae0801e142537a76ce9dca2196d8100e5))
 - add BLEU score calculation function with optional smoothing ([92c2879](https://github.com///commit/92c287993fc454706df5e768c88efc92b889b51a))
 - update example text in main execution for NLP demonstration ([b52edb7](https://github.com///commit/b52edb743ef156ea6394786359fa780d5548ebca))
 - implement database connection and enhance model evaluation with BLEU scoring ([12d7e37](https://github.com///commit/12d7e3787fd5e0af055f27545f76be88dd466f3d))
@@ -123,6 +124,7 @@
 
 ### Chore
 
+- update CHANGELOG.md for version 0.1.0 release ([c3dea3c](https://github.com///commit/c3dea3c8623074e433118585d8da8e66c5d10292))
 - update CHANGELOG.md with recent feature additions ([5437223](https://github.com///commit/5437223d3f2fcefadc8255e4867401e2863a424a))
 - update CHANGELOG.md with recent feature additions and bug fixes ([3f755c2](https://github.com///commit/3f755c22b801609daedfcb9aa04e3094d84f74aa))
 - update CHANGELOG.md with recent feature additions and code refactoring ([137fa6f](https://github.com///commit/137fa6f7fe28af9ed90b1574ca130f6210808fd5))
