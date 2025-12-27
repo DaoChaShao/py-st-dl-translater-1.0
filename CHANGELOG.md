@@ -1,7 +1,7 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-14)
+## [0.1.0](https://github.com///compare/55f36b19adbfdc5ee1a56686a25f662433a30260...0.1.0) (2025-12-27)
 
 ### Features
 
@@ -144,7 +144,8 @@
 
 ### Docs
 
-- update Streamlit link in Chinese README.md ([2c8e83f](https://github.com///commit/2c8e83f5290a080ade30541cc53b4aa3e244809d))
+- add cmn.txt ([381f688](https://github.com///commit/381f68867c7198a0fb847c1bb216357d14f6a3de))
+- update Streamlit link in Chinese README.md ([8870442](https://github.com///commit/8870442d1d1c15082143d806c2ea03e540c91605))
 - update Streamlit link in README.md ([a5f7273](https://github.com///commit/a5f727362a232b75b5d8e37d55b4927aee8f69be))
 - update CHANGELOG.md with recent feature additions and updates ([b3d6aad](https://github.com///commit/b3d6aade2a7ccfbb01628f2ceaff403315457d04))
 - add English dictionary file dictionary_en.json ([dc76f57](https://github.com///commit/dc76f5709792c8f551f8214c7eea9962ac0d8369))
